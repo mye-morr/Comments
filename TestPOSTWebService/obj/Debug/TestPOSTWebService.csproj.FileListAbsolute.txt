@@ -1,0 +1,12 @@
+C:\Users\analystprogrammer2\Downloads\TestPOSTWebService\TestPOSTWebService\TestPOSTWebService\bin\TestPOSTWebService.dll
+C:\Users\analystprogrammer2\Downloads\TestPOSTWebService\TestPOSTWebService\TestPOSTWebService\bin\TestPOSTWebService.pdb
+C:\Users\analystprogrammer2\Downloads\TestPOSTWebService\TestPOSTWebService\TestPOSTWebService\obj\Debug\TestPOSTWebService.csprojResolveAssemblyReference.cache
+C:\Users\analystprogrammer2\Downloads\TestPOSTWebService\TestPOSTWebService\TestPOSTWebService\obj\Debug\TestPOSTWebService.dll
+C:\Users\analystprogrammer2\Downloads\TestPOSTWebService\TestPOSTWebService\TestPOSTWebService\obj\Debug\TestPOSTWebService.pdb
+C:\Users\analystprogrammer2\Downloads\TestPOSTWebService\TestPOSTWebService\TestPOSTWebService\bin\TestPOSTWebService.dll.config
+C:\Users\analystprogrammer2\Documents\Visual Studio 2015\Projects\WcfService1\TestPOSTWebService\bin\TestPOSTWebService.dll.config
+C:\Users\analystprogrammer2\Documents\Visual Studio 2015\Projects\WcfService1\TestPOSTWebService\bin\TestPOSTWebService.dll
+C:\Users\analystprogrammer2\Documents\Visual Studio 2015\Projects\WcfService1\TestPOSTWebService\bin\TestPOSTWebService.pdb
+C:\Users\analystprogrammer2\Documents\Visual Studio 2015\Projects\WcfService1\TestPOSTWebService\obj\Debug\TestPOSTWebService.csprojResolveAssemblyReference.cache
+C:\Users\analystprogrammer2\Documents\Visual Studio 2015\Projects\WcfService1\TestPOSTWebService\obj\Debug\TestPOSTWebService.dll
+C:\Users\analystprogrammer2\Documents\Visual Studio 2015\Projects\WcfService1\TestPOSTWebService\obj\Debug\TestPOSTWebService.pdb

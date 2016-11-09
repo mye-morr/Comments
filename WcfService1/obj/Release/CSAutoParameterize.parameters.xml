@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="commentsEntities-Web.config Connection String" description="commentsEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/Model1.csdl|res://*/Model1.ssdl|res://*/Model1.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=AP2_TERMINAL;initial catalog=comments;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\analystprogrammer2\\documents\\visual\ studio\ 2015\\Projects\\WcfService1\\WcfService1\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='commentsEntities']/@connectionString" />
+  </parameter>
+  <parameter name="commentsConnectionString-Web.config Connection String" description="commentsConnectionString Connection String used in web.config by the application to access the database." defaultValue="Data Source=AP2_TERMINAL;Initial Catalog=comments;Integrated Security=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\analystprogrammer2\\documents\\visual\ studio\ 2015\\Projects\\WcfService1\\WcfService1\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='commentsConnectionString']/@connectionString" />
+  </parameter>
+  <parameter name="NorthwindConnectionString-Web.config Connection String" description="NorthwindConnectionString Connection String used in web.config by the application to access the database." defaultValue="Data Source=AP2_TERMINAL;Initial Catalog=Northwind;Integrated Security=True;Trusted_Connection=yes" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\analystprogrammer2\\documents\\visual\ studio\ 2015\\Projects\\WcfService1\\WcfService1\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='NorthwindConnectionString']/@connectionString" />
+  </parameter>
+</parameters>

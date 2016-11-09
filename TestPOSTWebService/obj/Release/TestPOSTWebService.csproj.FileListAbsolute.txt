@@ -1,0 +1,6 @@
+C:\Users\analystprogrammer2\Downloads\TestPOSTWebService\TestPOSTWebService\TestPOSTWebService\bin\TestPOSTWebService.dll
+C:\Users\analystprogrammer2\Downloads\TestPOSTWebService\TestPOSTWebService\TestPOSTWebService\bin\TestPOSTWebService.pdb
+C:\Users\analystprogrammer2\Downloads\TestPOSTWebService\TestPOSTWebService\TestPOSTWebService\obj\Release\TestPOSTWebService.csprojResolveAssemblyReference.cache
+C:\Users\analystprogrammer2\Downloads\TestPOSTWebService\TestPOSTWebService\TestPOSTWebService\obj\Release\TestPOSTWebService.dll
+C:\Users\analystprogrammer2\Downloads\TestPOSTWebService\TestPOSTWebService\TestPOSTWebService\obj\Release\TestPOSTWebService.pdb
+C:\Users\analystprogrammer2\Downloads\TestPOSTWebService\TestPOSTWebService\TestPOSTWebService\bin\TestPOSTWebService.dll.config
