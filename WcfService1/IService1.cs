@@ -15,6 +15,18 @@ namespace WcfService1
     {
 
         [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "createCustomer")]
+        wsSQLResult CreateCustomer(Stream JSONdataStream);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "updateOrderAddress")]
+        int UpdateOrderAddress(Stream JSONdataStream);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "deleteCustomer/{customerID}")]
+        wsSQLResult DeleteCustomer(string customerID);
+
+        [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getAllCustomers")]
         List<wsCustomer> GetAllCustomers();
 
@@ -29,10 +41,6 @@ namespace WcfService1
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getData/{value}")]
         string GetData(string value);
-
-        [OperationContract]
-        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "updateOrderAddress")]
-        int UpdateOrderAddress(Stream JSONdataStream);
 
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);

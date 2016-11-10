@@ -14,6 +14,122 @@ namespace WcfService1
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class Service1 : IService1
     {
+
+        public wsSQLResult CreateCustomer(Stream JSONdataStream)
+        {
+            wsSQLResult result = new wsSQLResult();
+            try
+            {
+                // Read in our Stream into a string...
+                StreamReader reader = new StreamReader(JSONdataStream);
+                string JSONdata = reader.ReadToEnd();
+
+                // ..then convert the string into a single "wsCustomer" record.
+                JavaScriptSerializer jss = new JavaScriptSerializer();
+                wsCustomer cust = jss.Deserialize<wsCustomer>(JSONdata);
+                if (cust == null)
+                {
+                    // Error: Couldn't deserialize our JSON string into a "wsCustomer" object.
+                    result.WasSuccessful = 0;
+                    result.Exception = "Unable to deserialize the JSON data.";
+                    return result;
+                }
+
+                NorthwindDataContext dc = new NorthwindDataContext();
+                Customer newCustomer = new Customer()
+                {
+                    CustomerID = cust.CustomerID,
+                    CompanyName = cust.CompanyName,
+                    City = cust.City
+                };
+
+                dc.Customers.InsertOnSubmit(newCustomer);
+                dc.SubmitChanges();
+
+                result.WasSuccessful = 1;
+                result.Exception = "";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.WasSuccessful = 0;
+                result.Exception = ex.Message;
+                return result;
+            }
+        }
+
+
+        public int UpdateOrderAddress(Stream JSONdataStream)
+        {
+            try
+            {
+                // Read in our Stream into a string...
+                StreamReader reader = new StreamReader(JSONdataStream);
+                string JSONdata = reader.ReadToEnd();
+
+                // ..then convert the string into a single "wsOrder" record.
+                JavaScriptSerializer jss = new JavaScriptSerializer();
+                wsOrder order = jss.Deserialize<wsOrder>(JSONdata);
+                if (order == null)
+                {
+                    // Error: Couldn't deserialize our JSON string into a "wsOrder" object.
+                    return -2;
+                }
+
+                NorthwindDataContext dc = new NorthwindDataContext();
+                Order currentOrder = dc.Orders.Where(o => o.OrderID == order.OrderID).FirstOrDefault();
+                if (currentOrder == null)
+                {
+                    // Couldn't find an [Order] record with this ID
+                    return -3;
+                }
+
+                // Update our SQL Server [Order] record, with our new Shipping Details (send from whatever
+                // app is calling this web service)
+                currentOrder.ShipName = order.ShipName;
+                currentOrder.ShipAddress = order.ShipAddress;
+                currentOrder.ShipCity = order.ShipCity;
+
+                dc.SubmitChanges();
+
+                return 0;     // Success !
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+        }
+
+        public wsSQLResult DeleteCustomer(string customerID)
+        {
+            wsSQLResult result = new wsSQLResult();
+            try
+            {
+                NorthwindDataContext dc = new NorthwindDataContext();
+                Customer cust = dc.Customers.Where(s => s.CustomerID == customerID).FirstOrDefault();
+                if (cust == null)
+                {
+                    // We couldn't find a [Customer] record with this ID.
+                    result.WasSuccessful = -3;
+                    result.Exception = "Could not find a [Customer] record with ID: " + customerID.ToString();
+                    return result;
+                }
+
+                dc.Customers.DeleteOnSubmit(cust);
+                dc.SubmitChanges();
+
+                result.WasSuccessful = 1;
+                result.Exception = "";
+                return result;     // Success !
+            }
+            catch (Exception ex)
+            {
+                result.WasSuccessful = -1;
+                result.Exception = "An exception occurred: " + ex.Message;
+                return result;     // Failed.
+            }
+        }
+
         public List<wsCustomer> GetAllCustomers()
         {
             try
@@ -93,48 +209,6 @@ namespace WcfService1
                 response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
                 response.StatusDescription = ex.Message.Replace("\r\n", "");
                 return null;
-            }
-        }
-
-        // http://localhost/comments/Service1.svc/updateOrderAddress
-        public int UpdateOrderAddress(Stream JSONdataStream)
-        {
-            try
-            {
-                // Read in our Stream into a string...
-                StreamReader reader = new StreamReader(JSONdataStream);
-                string JSONdata = reader.ReadToEnd();
-
-                // ..then convert the string into a single "wsOrder" record.
-                JavaScriptSerializer jss = new JavaScriptSerializer();
-                wsOrder order = jss.Deserialize<wsOrder>(JSONdata);
-                if (order == null)
-                {
-                    // Error: Couldn't deserialize our JSON string into a "wsOrder" object.
-                    return -2;
-                }
-
-                NorthwindDataContext dc = new NorthwindDataContext();
-                Order currentOrder = dc.Orders.Where(o => o.OrderID == order.OrderID).FirstOrDefault();
-                if (currentOrder == null)
-                {
-                    // Couldn't find an [Order] record with this ID
-                    return -3;
-                }
-
-                // Update our SQL Server [Order] record, with our new Shipping Details (send from whatever
-                // app is calling this web service)
-                currentOrder.ShipName = order.ShipName;
-                currentOrder.ShipAddress = order.ShipAddress;
-                currentOrder.ShipCity = order.ShipCity;
-
-                dc.SubmitChanges();
-
-                return 0;     // Success !
-            }
-            catch (Exception)
-            {
-                return -1;
             }
         }
 

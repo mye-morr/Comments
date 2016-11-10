@@ -44,10 +44,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/09/2016 11:57:34</publishTime>
     </File>
     <File Include="bin/WcfService1.dll">
-      <publishTime>11/09/2016 16:06:15</publishTime>
+      <publishTime>11/10/2016 12:20:08</publishTime>
     </File>
     <File Include="bin/WcfService1.pdb">
-      <publishTime>11/09/2016 16:06:15</publishTime>
+      <publishTime>11/10/2016 12:20:07</publishTime>
     </File>
     <File Include="Northwind.dbml">
       <publishTime>07/18/2016 15:10:02</publishTime>
