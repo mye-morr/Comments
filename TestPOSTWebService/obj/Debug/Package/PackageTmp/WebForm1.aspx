@@ -12,24 +12,105 @@
         <asp:Button ID="btnSearch" runat="server" Text="Search" />
         <hr />    
 
-        <asp:GridView ID="GridView1" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" CellPadding="4" DataKeyNames="OrderID" DataSourceID="SqlDataSource1" EnableModelValidation="True" ForeColor="#333333">
+        <asp:GridView ID="GridView1" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" CellPadding="4" 
+            EnableModelValidation="True" ForeColor="#333333" ShowFooter="True" DataKeyNames="numRow"
+            OnRowEditing="GridView1_RowEditing" OnRowCancelingEdit="GridView1_RowCancelling"
+            OnRowDeleting="GridView1_RowDeleting" OnRowUpdating="GridView1_RowUpdating">
             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
             <Columns>
-                <asp:CommandField ShowDeleteButton="True" ShowEditButton="True" />
-                <asp:BoundField DataField="OrderID" HeaderText="OrderID" InsertVisible="False" ReadOnly="True" SortExpression="OrderID" />
-                <asp:BoundField DataField="CustomerID" HeaderText="CustomerID" SortExpression="CustomerID" />
-                <asp:BoundField DataField="EmployeeID" HeaderText="EmployeeID" SortExpression="EmployeeID" />
-                <asp:BoundField DataField="OrderDate" HeaderText="OrderDate" SortExpression="OrderDate" />
-                <asp:BoundField DataField="RequiredDate" HeaderText="RequiredDate" SortExpression="RequiredDate" />
-                <asp:BoundField DataField="ShippedDate" HeaderText="ShippedDate" SortExpression="ShippedDate" />
-                <asp:BoundField DataField="ShipVia" HeaderText="ShipVia" SortExpression="ShipVia" />
-                <asp:BoundField DataField="Freight" HeaderText="Freight" SortExpression="Freight" />
-                <asp:BoundField DataField="ShipName" HeaderText="ShipName" SortExpression="ShipName" />
-                <asp:BoundField DataField="ShipAddress" HeaderText="ShipAddress" SortExpression="ShipAddress" />
-                <asp:BoundField DataField="ShipCity" HeaderText="ShipCity" SortExpression="ShipCity" />
-                <asp:BoundField DataField="ShipRegion" HeaderText="ShipRegion" SortExpression="ShipRegion" />
-                <asp:BoundField DataField="ShipPostalCode" HeaderText="ShipPostalCode" SortExpression="ShipPostalCode" />
-                <asp:BoundField DataField="ShipCountry" HeaderText="ShipCountry" SortExpression="ShipCountry" />
+                <asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:LinkButton ID="EditButton" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
+                        <asp:LinkButton ID="DeleteButton" runat="server" CausesValidation="False" CommandName="Delete" Text="Delete"></asp:LinkButton>
+                    </ItemTemplate>
+                    <EditItemTemplate>
+                        <asp:LinkButton ID="EditButton" runat="server" CausesValidation="False" CommandName="Update" Text="Update"></asp:LinkButton>
+                        <asp:LinkButton ID="DeleteButton" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                    </EditItemTemplate>
+                </asp:TemplateField> 
+                <asp:TemplateField HeaderText="datComment" SortExpression="datComment" >
+                    <ItemTemplate>
+                        <asp:Label ID="lblDatComment" runat="server" Text='<%# Eval("datComment") %>'></asp:Label>
+                    </ItemTemplate>
+                    <FooterStyle backcolor="White" horizontalalign="Center" />
+                    <FooterTemplate>
+                        <asp:LinkButton ID="InsertButton" runat="server" Text="Append This Comment <="></asp:LinkButton>
+                    </FooterTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="vcCommentBy" SortExpression="vcCommentBy" >
+                    <EditItemTemplate>
+                        <asp:TextBox ID="txtVcCommentBy" runat="server" Text='<%# Bind ("vcCommentBy") %>'></asp:TextBox>
+                    </EditItemTemplate>
+                    <ItemStyle horizontalalign="Center" />
+                    <ItemTemplate>
+                        <asp:Label ID="lblVcCommentBy" runat="server" Text='<%# Eval("vcCommentBy") %>'></asp:Label>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        <asp:TextBox ID="footerVcCommentBy" runat="server" onkeydown = "return (event.keyCode!=13);" />
+                    </FooterTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="vcComment" SortExpression="vcComment" >
+                    <EditItemTemplate>
+                        <asp:TextBox ID="txtVcComment" runat="server" Rows="3" TextMode="MultiLine" Text='<%# Bind ("vcComment") %>'></asp:TextBox>
+                    </EditItemTemplate>
+                    <ItemTemplate>
+                        <asp:Label ID="lblVcComment" runat="server" Text='<%# Eval("vcComment").ToString().Replace(Environment.NewLine, "<br />") %>'></asp:Label>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        <asp:TextBox ID="footerVcComment" runat="server" Rows="3" TextMode="MultiLine" onkeydown = "return (event.keyCode!=13);" />
+                    </FooterTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="idClaim" SortExpression="idClaim" >
+                    <ItemStyle horizontalalign="Center" />
+                    <ItemTemplate>
+                        <asp:Label ID="lblIdClaim" runat="server" Text='<%# Eval("idClaim") %>'></asp:Label>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        <asp:TextBox ID="footerIdClaim" runat="server" onkeydown = "return (event.keyCode!=13);" Text="(Optional)" />
+                    </FooterTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="vcClient" SortExpression="vcClient" >
+                    <ItemStyle horizontalalign="Center" />
+                    <ItemTemplate>
+                        <asp:Label ID="lblVcClient" runat="server" Text='<%# Eval("vcClient") %>'></asp:Label>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        <asp:TextBox ID="footerVcClient" runat="server" onkeydown = "return (event.keyCode!=13);" Text="(Optional)" />
+                    </FooterTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="vcRefNo" SortExpression="vcRefNo" >
+                    <EditItemTemplate>
+                        <asp:TextBox ID="txtVcRefNo" runat="server" Text='<%# Bind ("vcRefNo") %>'></asp:TextBox>
+                    </EditItemTemplate>
+                    <ItemTemplate>
+                        <asp:Label ID="lblVcRefNo" runat="server" Text='<%# Eval("vcRefNo") %>'></asp:Label>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        <asp:TextBox ID="footerVcRefNo" runat="server" onkeydown = "return (event.keyCode!=13);" Text="(Optional)" />
+                    </FooterTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="datFollowUp" SortExpression="datFollowUp" >
+                    <EditItemTemplate>
+                        <asp:TextBox ID="txtDatFollowUp" runat="server" Text='<%# Bind ("datFollowUp") %>'></asp:TextBox>
+                    </EditItemTemplate>
+                    <ItemTemplate>
+                        <asp:Label ID="lblDatFollowUp" runat="server" Text='<%# Eval("datFollowUp") %>'></asp:Label>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        <asp:TextBox ID="footerDatFollowUp" runat="server" onkeydown = "return (event.keyCode!=13);" Text="(Optional)" />
+                    </FooterTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="vcNotes" SortExpression="vcNotes" >
+                    <EditItemTemplate>
+                        <asp:TextBox ID="txtVcNotes" runat="server" Rows="3" TextMode="MultiLine" Text='<%# Bind("vcNotes") %>'></asp:TextBox>
+                    </EditItemTemplate>
+                    <ItemTemplate>
+                        <asp:Label ID="lblVcNotes" runat="server" Text='<%# Eval("vcNotes").ToString().Replace(Environment.NewLine, "<br />") %>'></asp:Label>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        <asp:TextBox ID="footerVcNotes" runat="server" Rows="3" TextMode="MultiLine" onkeydown = "return (event.keyCode!=13);" Text="(Optional)" />
+                    </FooterTemplate>
+                </asp:TemplateField>
             </Columns>
             <EditRowStyle BackColor="#999999" />
             <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
@@ -38,72 +119,6 @@
             <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
             <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
         </asp:GridView>
-    
-        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConflictDetection="CompareAllValues" ConnectionString="<%$ ConnectionStrings:NorthwindConnectionString1 %>" DeleteCommand="DELETE FROM [Orders] WHERE [OrderID] = @original_OrderID AND (([CustomerID] = @original_CustomerID) OR ([CustomerID] IS NULL AND @original_CustomerID IS NULL)) AND (([EmployeeID] = @original_EmployeeID) OR ([EmployeeID] IS NULL AND @original_EmployeeID IS NULL)) AND (([OrderDate] = @original_OrderDate) OR ([OrderDate] IS NULL AND @original_OrderDate IS NULL)) AND (([RequiredDate] = @original_RequiredDate) OR ([RequiredDate] IS NULL AND @original_RequiredDate IS NULL)) AND (([ShippedDate] = @original_ShippedDate) OR ([ShippedDate] IS NULL AND @original_ShippedDate IS NULL)) AND (([ShipVia] = @original_ShipVia) OR ([ShipVia] IS NULL AND @original_ShipVia IS NULL)) AND (([Freight] = @original_Freight) OR ([Freight] IS NULL AND @original_Freight IS NULL)) AND (([ShipName] = @original_ShipName) OR ([ShipName] IS NULL AND @original_ShipName IS NULL)) AND (([ShipAddress] = @original_ShipAddress) OR ([ShipAddress] IS NULL AND @original_ShipAddress IS NULL)) AND (([ShipCity] = @original_ShipCity) OR ([ShipCity] IS NULL AND @original_ShipCity IS NULL)) AND (([ShipRegion] = @original_ShipRegion) OR ([ShipRegion] IS NULL AND @original_ShipRegion IS NULL)) AND (([ShipPostalCode] = @original_ShipPostalCode) OR ([ShipPostalCode] IS NULL AND @original_ShipPostalCode IS NULL)) AND (([ShipCountry] = @original_ShipCountry) OR ([ShipCountry] IS NULL AND @original_ShipCountry IS NULL))" InsertCommand="INSERT INTO [Orders] ([CustomerID], [EmployeeID], [OrderDate], [RequiredDate], [ShippedDate], [ShipVia], [Freight], [ShipName], [ShipAddress], [ShipCity], [ShipRegion], [ShipPostalCode], [ShipCountry]) VALUES (@CustomerID, @EmployeeID, @OrderDate, @RequiredDate, @ShippedDate, @ShipVia, @Freight, @ShipName, @ShipAddress, @ShipCity, @ShipRegion, @ShipPostalCode, @ShipCountry)" OldValuesParameterFormatString="original_{0}" SelectCommand="SELECT * FROM [Orders]" UpdateCommand="UPDATE [Orders] SET [CustomerID] = @CustomerID, [EmployeeID] = @EmployeeID, [OrderDate] = @OrderDate, [RequiredDate] = @RequiredDate, [ShippedDate] = @ShippedDate, [ShipVia] = @ShipVia, [Freight] = @Freight, [ShipName] = @ShipName, [ShipAddress] = @ShipAddress, [ShipCity] = @ShipCity, [ShipRegion] = @ShipRegion, [ShipPostalCode] = @ShipPostalCode, [ShipCountry] = @ShipCountry WHERE [OrderID] = @original_OrderID AND (([CustomerID] = @original_CustomerID) OR ([CustomerID] IS NULL AND @original_CustomerID IS NULL)) AND (([EmployeeID] = @original_EmployeeID) OR ([EmployeeID] IS NULL AND @original_EmployeeID IS NULL)) AND (([OrderDate] = @original_OrderDate) OR ([OrderDate] IS NULL AND @original_OrderDate IS NULL)) AND (([RequiredDate] = @original_RequiredDate) OR ([RequiredDate] IS NULL AND @original_RequiredDate IS NULL)) AND (([ShippedDate] = @original_ShippedDate) OR ([ShippedDate] IS NULL AND @original_ShippedDate IS NULL)) AND (([ShipVia] = @original_ShipVia) OR ([ShipVia] IS NULL AND @original_ShipVia IS NULL)) AND (([Freight] = @original_Freight) OR ([Freight] IS NULL AND @original_Freight IS NULL)) AND (([ShipName] = @original_ShipName) OR ([ShipName] IS NULL AND @original_ShipName IS NULL)) AND (([ShipAddress] = @original_ShipAddress) OR ([ShipAddress] IS NULL AND @original_ShipAddress IS NULL)) AND (([ShipCity] = @original_ShipCity) OR ([ShipCity] IS NULL AND @original_ShipCity IS NULL)) AND (([ShipRegion] = @original_ShipRegion) OR ([ShipRegion] IS NULL AND @original_ShipRegion IS NULL)) AND (([ShipPostalCode] = @original_ShipPostalCode) OR ([ShipPostalCode] IS NULL AND @original_ShipPostalCode IS NULL)) AND (([ShipCountry] = @original_ShipCountry) OR ([ShipCountry] IS NULL AND @original_ShipCountry IS NULL))" FilterExpression="ShipCountry LIKE '{0}%'">
-            <DeleteParameters>
-                <asp:Parameter Name="original_OrderID" Type="Int32" />
-                <asp:Parameter Name="original_CustomerID" Type="String" />
-                <asp:Parameter Name="original_EmployeeID" Type="Int32" />
-                <asp:Parameter Name="original_OrderDate" Type="DateTime" />
-                <asp:Parameter Name="original_RequiredDate" Type="DateTime" />
-                <asp:Parameter Name="original_ShippedDate" Type="DateTime" />
-                <asp:Parameter Name="original_ShipVia" Type="Int32" />
-                <asp:Parameter Name="original_Freight" Type="Decimal" />
-                <asp:Parameter Name="original_ShipName" Type="String" />
-                <asp:Parameter Name="original_ShipAddress" Type="String" />
-                <asp:Parameter Name="original_ShipCity" Type="String" />
-                <asp:Parameter Name="original_ShipRegion" Type="String" />
-                <asp:Parameter Name="original_ShipPostalCode" Type="String" />
-                <asp:Parameter Name="original_ShipCountry" Type="String" />
-            </DeleteParameters>
-            <InsertParameters>
-                <asp:Parameter Name="CustomerID" Type="String" />
-                <asp:Parameter Name="EmployeeID" Type="Int32" />
-                <asp:Parameter Name="OrderDate" Type="DateTime" />
-                <asp:Parameter Name="RequiredDate" Type="DateTime" />
-                <asp:Parameter Name="ShippedDate" Type="DateTime" />
-                <asp:Parameter Name="ShipVia" Type="Int32" />
-                <asp:Parameter Name="Freight" Type="Decimal" />
-                <asp:Parameter Name="ShipName" Type="String" />
-                <asp:Parameter Name="ShipAddress" Type="String" />
-                <asp:Parameter Name="ShipCity" Type="String" />
-                <asp:Parameter Name="ShipRegion" Type="String" />
-                <asp:Parameter Name="ShipPostalCode" Type="String" />
-                <asp:Parameter Name="ShipCountry" Type="String" />
-            </InsertParameters>
-            <UpdateParameters>
-                <asp:Parameter Name="CustomerID" Type="String" />
-                <asp:Parameter Name="EmployeeID" Type="Int32" />
-                <asp:Parameter Name="OrderDate" Type="DateTime" />
-                <asp:Parameter Name="RequiredDate" Type="DateTime" />
-                <asp:Parameter Name="ShippedDate" Type="DateTime" />
-                <asp:Parameter Name="ShipVia" Type="Int32" />
-                <asp:Parameter Name="Freight" Type="Decimal" />
-                <asp:Parameter Name="ShipName" Type="String" />
-                <asp:Parameter Name="ShipAddress" Type="String" />
-                <asp:Parameter Name="ShipCity" Type="String" />
-                <asp:Parameter Name="ShipRegion" Type="String" />
-                <asp:Parameter Name="ShipPostalCode" Type="String" />
-                <asp:Parameter Name="ShipCountry" Type="String" />
-                <asp:Parameter Name="original_OrderID" Type="Int32" />
-                <asp:Parameter Name="original_CustomerID" Type="String" />
-                <asp:Parameter Name="original_EmployeeID" Type="Int32" />
-                <asp:Parameter Name="original_OrderDate" Type="DateTime" />
-                <asp:Parameter Name="original_RequiredDate" Type="DateTime" />
-                <asp:Parameter Name="original_ShippedDate" Type="DateTime" />
-                <asp:Parameter Name="original_ShipVia" Type="Int32" />
-                <asp:Parameter Name="original_Freight" Type="Decimal" />
-                <asp:Parameter Name="original_ShipName" Type="String" />
-                <asp:Parameter Name="original_ShipAddress" Type="String" />
-                <asp:Parameter Name="original_ShipCity" Type="String" />
-                <asp:Parameter Name="original_ShipRegion" Type="String" />
-                <asp:Parameter Name="original_ShipPostalCode" Type="String" />
-                <asp:Parameter Name="original_ShipCountry" Type="String" />
-            </UpdateParameters>
-        <FilterParameters>
-            <asp:ControlParameter Name="ShipCountry" ControlID="txtSearch" PropertyName="Text" />
-        </FilterParameters>
-        </asp:SqlDataSource>
     </form>
 </body>
 </html>
