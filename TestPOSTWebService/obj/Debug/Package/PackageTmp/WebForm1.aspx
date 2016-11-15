@@ -66,7 +66,7 @@
                         <asp:Label ID="lblIdClaim" runat="server" Text='<%# Eval("idClaim") %>'></asp:Label>
                     </ItemTemplate>
                     <FooterTemplate>
-                        <asp:TextBox ID="footerIdClaim" runat="server" onkeydown = "return (event.keyCode!=13);" Text="(Optional)" />
+                        <asp:TextBox ID="footerIdClaim" runat="server" onkeydown = "return (event.keyCode!=13);" />
                     </FooterTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="vcClient" SortExpression="vcClient" >
@@ -75,7 +75,7 @@
                         <asp:Label ID="lblVcClient" runat="server" Text='<%# Eval("vcClient") %>'></asp:Label>
                     </ItemTemplate>
                     <FooterTemplate>
-                        <asp:TextBox ID="footerVcClient" runat="server" onkeydown = "return (event.keyCode!=13);" Text="(Optional)" />
+                        <asp:TextBox ID="footerVcClient" runat="server" onkeydown = "return (event.keyCode!=13);" />
                     </FooterTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="vcRefNo" SortExpression="vcRefNo" >
