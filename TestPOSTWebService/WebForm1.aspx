@@ -17,6 +17,8 @@
             OnRowEditing="GridView1_RowEditing" OnRowCancelingEdit="GridView1_RowCancelling"
             OnRowDeleting="GridView1_RowDeleting" OnRowUpdating="GridView1_RowUpdating">
             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
+            <emptydatarowstyle backcolor="LightBlue" forecolor="Red"/>
+            <emptydatatemplate>No Data Found.</emptydatatemplate> 
             <Columns>
                 <asp:TemplateField>
                     <ItemTemplate>
@@ -34,7 +36,7 @@
                     </ItemTemplate>
                     <FooterStyle backcolor="White" horizontalalign="Center" />
                     <FooterTemplate>
-                        <asp:LinkButton ID="InsertButton" runat="server" Text="Append This Comment <="></asp:LinkButton>
+                        <asp:LinkButton ID="InsertButton" runat="server" Text="Append This Comment <=" OnClick="InsertButton_Click"></asp:LinkButton>
                     </FooterTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="vcCommentBy" SortExpression="vcCommentBy" >

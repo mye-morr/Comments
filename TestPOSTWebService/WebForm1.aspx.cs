@@ -105,6 +105,42 @@ namespace TestPOSTWebService
 
             }
         }
+
+        protected void InsertButton_Click(object sender, EventArgs e)
+        {
+            TextBox txtVcCommentBy = GridView1.FooterRow.FindControl("footerVcCommentBy") as TextBox;
+            TextBox txtVcComment = GridView1.FooterRow.FindControl("footerVcComment") as TextBox;
+            TextBox txtIdClaim = GridView1.FooterRow.FindControl("footerIdClaim") as TextBox;
+            TextBox txtIdClient = GridView1.FooterRow.FindControl("footerVcClient") as TextBox;
+
+            TextBox txtVcRefNo = GridView1.FooterRow.FindControl("footerVcRefNo") as TextBox;
+            TextBox txtDatFollowUp = GridView1.FooterRow.FindControl("footerDatFollowUp") as TextBox;
+            TextBox txtVcNotes = GridView1.FooterRow.FindControl("footerVcNotes") as TextBox;
+
+            String InsertQuery = string.Format(
+               "Insert into Simple(vcCommentBy,vcComment,vcRefNo,datFollowUp,vcNotes,idClaim,vcClient) values ("
+                   + "'{0}',"
+                   + "'{1}',"
+                   + "{2},"
+                   + "{3},"
+                   + "{4},'{5}','{6}') ",
+                   txtVcCommentBy.Text,
+                   txtVcComment.Text,
+                   txtVcRefNo.Text.Equals("(Optional)") ? "NULL" : "'" + txtVcRefNo.Text + "'",
+                   txtDatFollowUp.Text.Equals("(Optional)") ? "NULL" : "'" + txtDatFollowUp.Text + "'",
+                   txtVcNotes.Text.Equals("(Optional)") ? "NULL" : "'" + txtVcNotes.Text + "'",
+                   txtIdClaim.Text, txtIdClient.Text
+               );
+            string connectionstring = ConfigurationManager.ConnectionStrings["CommentsConnectionString"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connectionstring))
+            {
+                conn.Open();
+                SqlCommand comm = new SqlCommand(InsertQuery, conn);
+                comm.CommandType = CommandType.Text;
+                comm.ExecuteNonQuery();
+            }
+            BindGridData();
+        }
     }
 
 
