@@ -9,8 +9,9 @@
 <body>
     <form id="form1" runat="server">
         <asp:TextBox ID="txtSearch" runat="server"></asp:TextBox>
-        <asp:Button ID="btnSearch" runat="server" Text="Search" />
-        <hr />    
+        <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
+        <asp:Button ID="btnClear" runat="server" Text="Clear" OnClick="btnClear_Click" />
+        <hr />
 
         <asp:GridView ID="GridView1" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" CellPadding="4" 
             EnableModelValidation="True" ForeColor="#333333" ShowFooter="True" DataKeyNames="numRow"

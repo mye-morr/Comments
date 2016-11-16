@@ -80,15 +80,11 @@ namespace TestPOSTWebService
         {
             string sSource = "Select * From Simple";
 
-            if(IsPostBack)
+            if (!txtSearch.Text.Equals(""))
             {
-                string sSearch = Request.Form[txtSearch.UniqueID];
-                if(sSearch.Length > 0)
-                {
-                    sSource += " WHERE idClaim='" + sSearch + "'";
-                }
+                sSource += " WHERE idClaim='" + txtSearch.Text + "'";
             }
-            
+                
             string connectionstring = ConfigurationManager.ConnectionStrings["CommentsConnectionString"].ConnectionString;
 
             using (SqlConnection conn = new SqlConnection(connectionstring))
@@ -141,7 +137,16 @@ namespace TestPOSTWebService
             }
             BindGridData();
         }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            BindGridData();
+        }
+
+        protected void btnClear_Click(object sender, EventArgs e)
+        {
+            txtSearch.Text = "";
+            BindGridData();
+        }
     }
-
-
 }
