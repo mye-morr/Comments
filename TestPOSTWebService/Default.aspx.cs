@@ -165,14 +165,24 @@ namespace TestPOSTWebService
 
         protected void InsertButton_Click(object sender, EventArgs e)
         {
-            TextBox txtVcCommentBy = GridView1.FooterRow.FindControl("footerVcCommentBy") as TextBox;
-            TextBox txtVcComment = GridView1.FooterRow.FindControl("footerVcComment") as TextBox;
-            TextBox txtIdClaim = GridView1.FooterRow.FindControl("footerIdClaim") as TextBox;
-            TextBox txtIdClient = GridView1.FooterRow.FindControl("footerVcClient") as TextBox;
+            Control control = null;
+            if (GridView1.FooterRow != null)
+            {
+                control = GridView1.FooterRow;
+            }
+            else
+            {
+                control = GridView1.Controls[0].Controls[0];
+            }
 
-            TextBox txtVcRefNo = GridView1.FooterRow.FindControl("footerVcRefNo") as TextBox;
-            TextBox txtDatFollowUp = GridView1.FooterRow.FindControl("footerDatFollowUp") as TextBox;
-            TextBox txtVcNotes = GridView1.FooterRow.FindControl("footerVcNotes") as TextBox;
+            TextBox txtVcCommentBy = control.FindControl("footerVcCommentBy") as TextBox;
+            TextBox txtVcComment = control.FindControl("footerVcComment") as TextBox;
+            TextBox txtIdClaim = control.FindControl("footerIdClaim") as TextBox;
+            TextBox txtIdClient = control.FindControl("footerVcClient") as TextBox;
+
+            TextBox txtVcRefNo = control.FindControl("footerVcRefNo") as TextBox;
+            TextBox txtDatFollowUp = control.FindControl("footerDatFollowUp") as TextBox;
+            TextBox txtVcNotes = control.FindControl("footerVcNotes") as TextBox;
 
             String InsertQuery = string.Format(
                "Insert into Simple(vcCommentBy,vcComment,vcRefNo,datFollowUp,vcNotes,idClaim,vcClient) values ("

@@ -18,8 +18,6 @@
             OnRowEditing="GridView1_RowEditing" OnRowCancelingEdit="GridView1_RowCancelling"
             OnRowDeleting="GridView1_RowDeleting" OnRowUpdating="GridView1_RowUpdating" OnSorting="GridView1_Sorting">
             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
-            <emptydatarowstyle backcolor="LightBlue" forecolor="Red"/>
-            <emptydatatemplate>No Data Found.</emptydatatemplate> 
             <Columns>
                 <asp:TemplateField>
                     <ItemTemplate>
@@ -121,6 +119,61 @@
             <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
             <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
             <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
+            <EmptyDataTemplate>
+                <tr style="background-color: #5D7B9D; color:white; font-weight:bold; text-decoration:underline">
+                    <th scope="col">
+                        vcCommentBy
+                    </th>
+                    <th scope="col">
+                       vcComment
+                    </th>
+                    <th scope="col">
+                        idClaim
+                    </th>
+                     <th scope="col">
+                        vcClient
+                    </th>
+                    <th scope="col">
+                        vcRefNo
+                    </th>
+                    <th scope="col">
+                       datFollowUp
+                    </th>
+                    <th scope="col">
+                        vcNotes
+                    </th>
+                    <th scope="col">
+                        
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <asp:TextBox ID="footerVcCommentBy" runat="server" onkeydown = "return (event.keyCode!=13);" />
+                    </td>
+                    <td>
+                        <asp:TextBox ID="footerVcComment" runat="server" onkeydown = "return (event.keyCode!=13);" />
+                    </td>
+                     <td>
+                        <asp:TextBox ID="footerIdClaim" runat="server" onkeydown = "return (event.keyCode!=13);" />
+                    </td>
+                    <td>
+                        <asp:TextBox ID="footerVcClient" runat="server" onkeydown = "return (event.keyCode!=13);" />
+                    </td>
+                     <td>
+                        <asp:TextBox ID="footerVcRefNo" runat="server" Text="(Optional)" onkeydown = "return (event.keyCode!=13);" />
+                    </td>
+                    <td>
+                        <asp:TextBox ID="footerDatFollowUp" runat="server" Text="(Optional)" onkeydown = "return (event.keyCode!=13);" />
+                    </td>
+                    <td>
+                        <asp:TextBox ID="footerVcNotes" runat="server" Text="(Optional)" onkeydown = "return (event.keyCode!=13);" />
+                    </td>
+                    <td>
+                        <asp:Button ID="AddNewButton" runat="server" Text="Add New" OnClick="InsertButton_Click"  />
+                    </td>
+                </tr>
+
+            </EmptyDataTemplate>
         </asp:GridView>
     </form>
 </body>
