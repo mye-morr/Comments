@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Reflection;
+using System.Text;
 
 namespace TestPOSTWebService
 {
@@ -24,6 +26,31 @@ namespace TestPOSTWebService
                 //Bind the GridView control to the data source.
                 GridView1.DataSource = Session["CommentsTable"];
                 GridView1.DataBind();
+            }
+        }
+
+        protected void Refresh_Sample_Dialog(DataTable dt)
+        {
+            TableHeaderRow thRow = new TableHeaderRow();
+            TableHeaderCell thCell = new TableHeaderCell();
+            thCell.Text = "Sample Comments Dialog";
+            thRow.Cells.Add(thCell);
+            Table1.Rows.Add(thRow);
+
+            List<Comment> listComments = dt.DataTableToList<Comment>();
+            foreach (Comment comment in listComments)
+            {
+                TableRow row = new TableRow();
+                TableCell cell = new TableCell();
+
+                StringBuilder sb = new StringBuilder("");
+                sb.AppendFormat("{0}, {1}", comment.datComment, comment.vcCommentBy);
+
+                sb.AppendLine("<br/><br/>");
+                sb.AppendLine(comment.vcComment);
+                cell.Text = sb.ToString();
+                row.Cells.Add(cell);
+                Table1.Rows.Add(row);
             }
         }
 
@@ -54,10 +81,18 @@ namespace TestPOSTWebService
 
         protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
+
             string numRow = GridView1.DataKeys[e.RowIndex].Value.ToString();
             TextBox txtVcCommentBy = GridView1.Rows[e.RowIndex].FindControl("txtVcCommentBy") as TextBox;
             TextBox txtVcComment = GridView1.Rows[e.RowIndex].FindControl("txtVcComment") as TextBox;
-            TextBox txtVcRefNo = GridView1.Rows[e.RowIndex].FindControl("txtVcRefNo") as TextBox;
+            TextBox txtVcCategory = GridView1.Rows[e.RowIndex].FindControl("txtVcCategory") as TextBox;
+            TextBox txtDecExpected = GridView1.Rows[e.RowIndex].FindControl("txtDecExpected") as TextBox;
+            TextBox txtDecVariance = GridView1.Rows[e.RowIndex].FindControl("txtDecVariance") as TextBox;
+            TextBox txtVcInsurance = GridView1.Rows[e.RowIndex].FindControl("txtVcInsurance") as TextBox;
+            TextBox txtVcContactName = GridView1.Rows[e.RowIndex].FindControl("txtVcContactName") as TextBox;
+            TextBox txtVcContactPhone = GridView1.Rows[e.RowIndex].FindControl("txtVcContactPhone") as TextBox;
+            TextBox txtVcContactEmail = GridView1.Rows[e.RowIndex].FindControl("txtVcContactEmail") as TextBox;
+            TextBox txtVcCallRefNo = GridView1.Rows[e.RowIndex].FindControl("txtVcCallRefNo") as TextBox;
             TextBox txtDatFollowUp = GridView1.Rows[e.RowIndex].FindControl("txtDatFollowUp") as TextBox;
             TextBox txtVcNotes = GridView1.Rows[e.RowIndex].FindControl("txtVcNotes") as TextBox;
 
@@ -65,13 +100,27 @@ namespace TestPOSTWebService
                 "UPDATE Simple SET "
                     + "vcCommentBy='{0}',"
                     + "vcComment='{1}',"
-                    + "vcRefNo={2},"
-                    + "datFollowUp={3},"
-                    + "vcNotes={4} "
-                + "WHERE numRow={5}",
+                    + "vcCategory={2},"
+                    + "decExpected={3},"
+                    + "decVariance={4},"
+                    + "vcInsurance={5},"
+                    + "vcContactName={6},"
+                    + "vcContactPhone={7},"
+                    + "vcContactEmail={8},"
+                    + "vcCallRefNo={9},"
+                    + "datFollowUp={10},"
+                    + "vcNotes={11} "
+                + "WHERE numRow={12}",
                     txtVcCommentBy.Text,
                     txtVcComment.Text,
-                    txtVcRefNo.Text.Equals("") ? "NULL" : "'" + txtVcRefNo.Text + "'",
+                    txtVcCategory.Text.Equals("") ? "NULL" : "'" + txtVcCategory.Text + "'",
+                    txtDecExpected.Text.Equals("") ? "NULL" : "'" + txtDecExpected.Text + "'",
+                    txtDecVariance.Text.Equals("") ? "NULL" : "'" + txtDecVariance.Text + "'",
+                    txtVcInsurance.Text.Equals("") ? "NULL" : "'" + txtVcInsurance.Text + "'",
+                    txtVcContactName.Text.Equals("") ? "NULL" : "'" + txtVcContactName.Text + "'",
+                    txtVcContactPhone.Text.Equals("") ? "NULL" : "'" + txtVcContactPhone.Text + "'",
+                    txtVcContactEmail.Text.Equals("") ? "NULL" : "'" + txtVcContactEmail.Text + "'",
+                    txtVcCallRefNo.Text.Equals("") ? "NULL" : "'" + txtVcCallRefNo.Text + "'",
                     txtDatFollowUp.Text.Equals("") ? "NULL" : "'" + txtDatFollowUp.Text + "'",
                     txtVcNotes.Text.Equals("") ? "NULL" : "'" + txtVcNotes.Text + "'",
                     Convert.ToInt32(numRow)
@@ -178,25 +227,36 @@ namespace TestPOSTWebService
             TextBox txtVcCommentBy = control.FindControl("footerVcCommentBy") as TextBox;
             TextBox txtVcComment = control.FindControl("footerVcComment") as TextBox;
             TextBox txtIdClaim = control.FindControl("footerIdClaim") as TextBox;
-            TextBox txtIdClient = control.FindControl("footerVcClient") as TextBox;
-
-            TextBox txtVcRefNo = control.FindControl("footerVcRefNo") as TextBox;
+            TextBox txtVcCategory = control.FindControl("footerVcCategory") as TextBox;
+            TextBox txtDecExpected = control.FindControl("footerDecExpected") as TextBox;
+            TextBox txtDecVariance = control.FindControl("footerDecVariance") as TextBox;
+            TextBox txtVcClient = control.FindControl("footerVcClient") as TextBox;
+            TextBox txtVcInsurance = control.FindControl("footerVcInsurance") as TextBox;
+            TextBox txtVcContactName = control.FindControl("footerVcContactName") as TextBox;
+            TextBox txtVcContactPhone = control.FindControl("footerVcContactPhone") as TextBox;
+            TextBox txtVcContactEmail = control.FindControl("footerVcContactEmail") as TextBox;
+            TextBox txtVcCallRefNo = control.FindControl("footerVcCallRefNo") as TextBox;
             TextBox txtDatFollowUp = control.FindControl("footerDatFollowUp") as TextBox;
             TextBox txtVcNotes = control.FindControl("footerVcNotes") as TextBox;
 
             String InsertQuery = string.Format(
-               "Insert into Simple(vcCommentBy,vcComment,vcRefNo,datFollowUp,vcNotes,idClaim,vcClient) values ("
-                   + "'{0}',"
-                   + "'{1}',"
-                   + "{2},"
-                   + "{3},"
-                   + "{4},'{5}','{6}') ",
-                   txtVcCommentBy.Text,
-                   txtVcComment.Text,
-                   txtVcRefNo.Text.Equals("(Optional)") ? "NULL" : "'" + txtVcRefNo.Text + "'",
-                   txtDatFollowUp.Text.Equals("(Optional)") ? "NULL" : "'" + txtDatFollowUp.Text + "'",
-                   txtVcNotes.Text.Equals("(Optional)") ? "NULL" : "'" + txtVcNotes.Text + "'",
-                   txtIdClaim.Text, txtIdClient.Text
+               "Insert into Simple(vcCommentBy,vcComment,idClaim,vcCategory,decExpected, decVariance,vcClient,"
+                   + "vcInsurance,vcContactName,vcContactPhone,vcContactEmail,vcCallRefNo,datFollowUp,vcNotes) values ("
+                   + "'{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}) ",
+                    txtVcCommentBy.Text,
+                    txtVcComment.Text,
+                    txtIdClaim.Text.Equals("(Optional)") ? "NULL" : "'" + txtIdClaim.Text + "'",
+                    txtVcCategory.Text.Equals("(Optional)") ? "NULL" : "'" + txtVcCategory.Text + "'",
+                    txtDecExpected.Text.Equals("(Optional)") ? "NULL" : "'" + txtVcCategory.Text + "'",
+                    txtDecVariance.Text.Equals("(Optional)") ? "NULL" : "'" + txtVcCategory.Text + "'",
+                    txtVcClient.Text.Equals("(Optional)") ? "NULL" : "'" + txtVcClient.Text + "'",
+                    txtVcInsurance.Text.Equals("(Optional)") ? "NULL" : "'" + txtVcInsurance.Text + "'",
+                    txtVcContactName.Text.Equals("(Optional)") ? "NULL" : "'" + txtVcContactName.Text + "'",
+                    txtVcContactPhone.Text.Equals("(Optional)") ? "NULL" : "'" + txtVcContactPhone.Text + "'",
+                    txtVcContactEmail.Text.Equals("(Optional)") ? "NULL" : "'" + txtVcContactEmail.Text + "'",
+                    txtVcCallRefNo.Text.Equals("(Optional)") ? "NULL" : "'" + txtVcCallRefNo.Text + "'",
+                    txtDatFollowUp.Text.Equals("(Optional)") ? "NULL" : "'" + txtDatFollowUp.Text + "'",
+                    txtVcNotes.Text.Equals("(Optional)") ? "NULL" : "'" + txtVcNotes.Text + "'"
                );
             string connectionstring = ConfigurationManager.ConnectionStrings["CommentsConnectionString"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionstring))
@@ -223,9 +283,20 @@ namespace TestPOSTWebService
         protected void btnClear_Click(object sender, EventArgs e)
         {
             txtSearch.Text = "";
+            Label1.Visible = true;
             DataTable dt = GridDataTable();
             GridView1.DataSource = dt;
             GridView1.DataBind();
+        }
+
+        protected void btnPreview_Click(object sender, EventArgs e)
+        {
+            DataTable dt = GridDataTable();
+            GridView1.DataSource = dt;
+            GridView1.DataBind();
+
+            Label1.Visible = false;
+            Refresh_Sample_Dialog(dt);
         }
     }
 }

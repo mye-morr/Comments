@@ -303,6 +303,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper.cs" />
+    <Compile Include="Comment.cs" />
     <Compile Include="WebForm1.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>WebForm1.aspx</DependentUpon>
