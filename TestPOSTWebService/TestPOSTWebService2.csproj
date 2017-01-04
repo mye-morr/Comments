@@ -44,6 +44,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.1.0\lib\net35\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
@@ -88,6 +92,14 @@
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Content\ui.jqgrid.css" />
     <Content Include="Content\ui.jqgrid.min.css" />
+    <Content Include="gridviewScroll.css" />
+    <Content Include="gridviewScroll.js" />
+    <Content Include="gridviewScroll.min.js" />
+    <Content Include="Img\arrowhl.png" />
+    <Content Include="Img\arrowhr.png" />
+    <Content Include="Img\arrowvb.png" />
+    <Content Include="Img\arrowvt.png" />
+    <Content Include="Img\help_icon.jpg" />
     <Content Include="WebForm1.aspx" />
     <Content Include="packages.config" />
     <Content Include="Scripts\free-jqGrid\i18n\grid.locale-ar.js" />

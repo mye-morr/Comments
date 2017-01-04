@@ -1,0 +1,8 @@
+C:\Users\analystprogrammer2\Documents\Visual Studio 2015\Projects\WcfService2\TestPOSTWebService\bin\TestPOSTWebService.dll.config
+C:\Users\analystprogrammer2\Documents\Visual Studio 2015\Projects\WcfService2\TestPOSTWebService\bin\TestPOSTWebService.dll
+C:\Users\analystprogrammer2\Documents\Visual Studio 2015\Projects\WcfService2\TestPOSTWebService\bin\TestPOSTWebService.pdb
+C:\Users\analystprogrammer2\Documents\Visual Studio 2015\Projects\WcfService2\TestPOSTWebService\obj\Debug\TestPOSTWebService2.csprojResolveAssemblyReference.cache
+C:\Users\analystprogrammer2\Documents\Visual Studio 2015\Projects\WcfService2\TestPOSTWebService\obj\Debug\TestPOSTWebService.dll
+C:\Users\analystprogrammer2\Documents\Visual Studio 2015\Projects\WcfService2\TestPOSTWebService\obj\Debug\TestPOSTWebService.pdb
+C:\Users\analystprogrammer2\documents\visual studio 2015\Projects\WcfService2\TestPOSTWebService\bin\EPPlus.dll
+C:\Users\analystprogrammer2\documents\visual studio 2015\Projects\WcfService2\TestPOSTWebService\bin\EPPlus.xml

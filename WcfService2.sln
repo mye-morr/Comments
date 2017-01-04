@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 14 for Web
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService1", "WcfService1\WcfService1.csproj", "{03FED4F9-249B-452D-9892-A0AB8BF87532}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService2", "WcfService1\WcfService2.csproj", "{03FED4F9-249B-452D-9892-A0AB8BF87532}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPOSTWebService", "TestPOSTWebService\TestPOSTWebService.csproj", "{E5D1B9FF-EC54-48B7-A861-E1B23621D8EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPOSTWebService2", "TestPOSTWebService\TestPOSTWebService2.csproj", "{E5D1B9FF-EC54-48B7-A861-E1B23621D8EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
