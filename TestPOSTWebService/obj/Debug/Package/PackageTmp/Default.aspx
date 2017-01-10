@@ -22,6 +22,20 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="gridviewScroll.min.js"></script>
     <link href="GridviewScroll.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+	  function triggerFileUpload()
+	  {
+		document.getElementById("File1").click();
+	  }
+
+	  function setHiddenValue()
+	  {
+	      document.getElementById("Hidden1").value = document.getElementById("File1").value;
+	      this.form1.submit();
+	  }
+    </script>
+
 </head>
 <body>
     <form id="form1" runat="server">
@@ -78,7 +92,7 @@
                                     <td>
                                     </td>
                                     <td>
-                                        <asp:Label ID="Label2" runat="server" Text='<%# Convert.ToString(DataBinder.Eval(Container.DataItem, "datFuComment")).Substring(0,10) %>' />,  
+                                        <asp:Label ID="Label2" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "datFuComment").ToString().Split()[0] %>' />,  
                                         <asp:Label ID="Label3" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "vcFuCommentBy") %>' /> 
                                     </td>
                                     <td>                                        
@@ -86,7 +100,7 @@
                                     <td rowspan="2" style="border-left:1px solid grey; max-width: 100px">                                        
                                     </td>
                                     <td>
-                                        <asp:Label ID="Label7" runat="server" Text='<%# prefixOrSuffixIfDataExists("#",Convert.ToString(DataBinder.Eval(Container.DataItem, "vcCallRefNo")),"") %>' /><br /> 
+                                        <asp:Label ID="Label7" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "vcCallRefNo") %>' /><br /> 
                                     </td>
                                 </tr>
                                 <tr style="border-bottom:2px solid grey">
@@ -112,7 +126,7 @@
                                     <td>
                                     </td>
                                     <td>
-                                        <asp:Label ID="Label9" runat="server" Text='<%# Convert.ToString(DataBinder.Eval(Container.DataItem, "datFuComment")).Substring(0,9) %>' />,  
+                                        <asp:Label ID="Label9" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "datFuComment").ToString().Split()[0] %>' />,  
                                         <asp:Label ID="Label10" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "vcFuCommentBy") %>' /> 
                                     </td>
                                     <td>                                        
@@ -120,7 +134,7 @@
                                     <td rowspan="2" style="border-left:1px solid grey; max-width: 100px">                                        
                                     </td>
                                     <td>
-                                        <asp:TextBox id="txtVcCallRefNo" runat="server" PlaceHolder="#Call Ref #" Text='<%# DataBinder.Eval(Container.DataItem, "vcCallRefNo") %>' /><br /> 
+                                        <asp:TextBox id="txtVcCallRefNo" runat="server" PlaceHolder="Call Ref #" Text='<%# DataBinder.Eval(Container.DataItem, "vcCallRefNo") %>' /><br /> 
                                     </td>
                                 </tr>
                                 <tr style="border-bottom:2px solid grey">
@@ -153,7 +167,7 @@
                     <table style="margin-left:10px; margin-right:10px">
                         <tr>
                             <td>
-                                <asp:TextBox ID="txtVcCallRefNo" runat="server" Width="95px" PlaceHolder="#Call Ref #" onkeydown = "return (event.keyCode!=13);" />
+                                <asp:TextBox ID="txtVcCallRefNo" runat="server" Width="95px" PlaceHolder="Call Ref #" onkeydown = "return (event.keyCode!=13);" />
                             </td>
                             <td>
                                 <asp:TextBox ID="txtVcContactName" runat="server" Width="95px" PlaceHolder="Name" onkeydown = "return (event.keyCode!=13);" />
@@ -303,10 +317,16 @@
             <asp:TextBox ID="txtSearch" runat="server"></asp:TextBox>
             <asp:Button ID="btnPreview" runat="server" Text="Preview" OnClick="btnPreview_Click" />
             <asp:Button ID="btnClear" runat="server" Text="Clear" OnClick="btnClear_Click" />
+            &emsp;
+
+	  <input runat="server" id="Hidden1" type="hidden" />
+	  <input runat="server" id="File1" type="file" onchange="setHiddenValue()" style="display:none" />
+	  <input id="Button2" type="button" onclick="triggerFileUpload()" value="Upload" />
+
         </div>
         <div style="float:right; max-height:5%; margin-right:20px">
 <a href="http://192.168.161.126/tips/" target="popup" onclick="window.open('http://192.168.161.126/tips/','popup','width=800,height=800'); return false;"><img src="Img/help_icon.jpg" style="height:15px" /></a>
-            <asp:Label ID="lblCustomSQL" runat="server" Text="Custom Sort / Filter:"/>
+            <asp:Label ID="lblCustomSQL" runat="server" Text="Sort / Filter:"/>
             <asp:TextBox ID="txtCustomSQL" runat="server" Width="350px"></asp:TextBox>
             <asp:Button ID="btnQuery" runat="server" Text="Run" OnClick="btnCustomSQL_Click" />
         </div>

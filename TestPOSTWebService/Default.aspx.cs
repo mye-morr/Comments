@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Reflection;
 using System.Text;
 using System.Globalization;
+using OfficeOpenXml;
 
 namespace TestPOSTWebService
 {
@@ -31,8 +32,11 @@ namespace TestPOSTWebService
             {
                 String foo = this.Hidden1.Value;
                 if(foo.Length > 0) {
+
+                    var excel = new ExcelPackage(File1.PostedFile.InputStream);
+                    var dt = excel.ToDataTable();
+
                 }
-                    
             }
         }
 
