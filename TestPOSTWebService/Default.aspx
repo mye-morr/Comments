@@ -317,14 +317,15 @@
             <asp:TextBox ID="txtSearch" runat="server"></asp:TextBox>
             <asp:Button ID="btnPreview" runat="server" Text="Preview" OnClick="btnPreview_Click" />
             <asp:Button ID="btnClear" runat="server" Text="Clear" OnClick="btnClear_Click" />
-            &emsp;
+            &nbsp;&nbsp;&nbsp;
 
 	  <input runat="server" id="Hidden1" type="hidden" />
 	  <input runat="server" id="File1" type="file" onchange="setHiddenValue()" style="display:none" />
-	  <input id="Button2" type="button" onclick="triggerFileUpload()" value="Upload" />
+	  <input id="Button2" type="button" onclick="triggerFileUpload()" value="Up" />
+	  <input id="Button3" type="button" onclick="triggerFileUpload()" value="Down" />
 
         </div>
-        <div style="float:right; max-height:5%; margin-right:20px">
+        <div style="float:right; max-height:5%; margin-right:10px">
 <a href="http://192.168.161.126/tips/" target="popup" onclick="window.open('http://192.168.161.126/tips/','popup','width=800,height=800'); return false;"><img src="Img/help_icon.jpg" style="height:15px" /></a>
             <asp:Label ID="lblCustomSQL" runat="server" Text="Sort / Filter:"/>
             <asp:TextBox ID="txtCustomSQL" runat="server" Width="350px"></asp:TextBox>

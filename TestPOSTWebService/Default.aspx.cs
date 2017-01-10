@@ -36,7 +36,41 @@ namespace TestPOSTWebService
                     var excel = new ExcelPackage(File1.PostedFile.InputStream);
                     var dt = excel.ToDataTable();
 
+                    var table = "Initial";
+                    using (var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["CommentsConnectionString"].ConnectionString))
+                    {
+                        var bulkCopy = new SqlBulkCopy(conn);
+                        bulkCopy.DestinationTableName = table;
+                        conn.Open();
+                        var schema = conn.GetSchema("Columns", new[] { null, null, table, null });
+                        foreach (DataColumn sourceColumn in dt.Columns)
+                        {
+                            foreach (DataRow row in schema.Rows)
+                            {
+                                if (string.Equals(sourceColumn.ColumnName, (string)row["COLUMN_NAME"], StringComparison.OrdinalIgnoreCase))
+                                {
+                                    bulkCopy.ColumnMappings.Add(sourceColumn.ColumnName, (string)row["COLUMN_NAME"]);
+                                    break;
+                                }
+                            }
+                        }
+
+                        bulkCopy.BatchSize = 10000;
+                        bulkCopy.BulkCopyTimeout = 0;
+                        bulkCopy.WriteToServer(dt);
+                    }
                 }
+
+                // otherwise, it loads the data twice!!
+                this.Hidden1.Value = "";
+
+                // REFRESH DATA!, see !IsPostBack
+                //Persist the table in the Session object.
+                Session["AccountsTable"] = GridDataTable().Tables[0];
+
+                //Bind the GridView control to the data source.
+                GridView1.DataSource = Session["AccountsTable"];
+                GridView1.DataBind();
             }
         }
 
@@ -248,9 +282,6 @@ namespace TestPOSTWebService
 
             GridView1.DataSource = Session["AccountsTable"];
             GridView1.DataBind();
-
-            GridView2.DataSource = ds.Tables[1];
-            GridView2.DataBind();
         }
 
         protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
