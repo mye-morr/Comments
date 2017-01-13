@@ -14,6 +14,9 @@ namespace TestPOSTWebService
         public static DataTable ToDataTable(this ExcelPackage package)
         {
 
+            ExcelWorksheet workSheet = package.Workbook.Worksheets.First();
+            DataTable table = new DataTable();
+
             Dictionary<string, bool> dictCols = new Dictionary<string, bool>();
 
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["CommentsConnectionString"].ConnectionString))
@@ -28,66 +31,40 @@ namespace TestPOSTWebService
                     if (!sCol.Equals("numRow")
                         && !sCol.Equals("decVariance")) {
                         dictCols.Add(sCol, true);
+                        table.Columns.Add(sCol);
                     }            
                 }
             }
 
-            ExcelWorksheet workSheet = package.Workbook.Worksheets.First();
-            DataTable table = new DataTable();
-            foreach (var firstRowCell in workSheet.Cells[1, 1, 1, workSheet.Dimension.End.Column])
+            // go through all rows
+            for (int rowNumber = 2; rowNumber <= workSheet.Dimension.End.Row; rowNumber++)
             {
-                table.Columns.Add(firstRowCell.Text);
-                dictCols.Remove(firstRowCell.Text);
-            }
-
-            // add in missing columns to complete data-set
-            // sproc is expecting entire schema for upsert
-            foreach(var sCol in dictCols.Keys)
-            {
-                table.Columns.Add(sCol);
-            }
-
-            for (var rowNumber = 2; rowNumber <= workSheet.Dimension.End.Row; rowNumber++)
-            {
-                var row = workSheet.Cells[rowNumber, 1, rowNumber, workSheet.Dimension.End.Column];
                 var newRow = table.NewRow();
 
-                int iCol = 0;
-                foreach (var cell in row)
+                // add in missing columns to complete data-set
+                // sproc is expecting entire schema for upsert
+                for (int i = 0; i < dictCols.Count; i++)
                 {
-                    newRow[cell.Start.Column - 1] = cell.Text;
-                    iCol = cell.Start.Column - 1;
-                }
+                    newRow[i] = DBNull.Value;
 
-                // fill null values for extra columns
-                for(var i = 1; i < dictCols.Count; i++)
-                {
-                    newRow[iCol + i] = DBNull.Value;
+                    // source columns could be in any order :-\
+                    for (int j = 1; j <= workSheet.Dimension.End.Column; j++)
+                    {
+                        var sExamine1 = dictCols.Keys.ElementAt(i);
+                        var sExamine2 = workSheet.Cells[1, j].Value.ToString();
+
+                        if (dictCols.Keys.ElementAt(i)
+                            .Equals(workSheet.Cells[1, j].Value.ToString()))
+                        {
+                            newRow[i] = workSheet.Cells[rowNumber, j].Text;
+                            break;
+                        }
+                    }
                 }
 
                 table.Rows.Add(newRow);
             }
             return table;
         }
-
-        /*
-        private DataSet GridDataTable(string Query)
-        {
-            string connectionstring = ConfigurationManager.ConnectionStrings["CommentsConnectionString"].ConnectionString;
-
-            using (SqlConnection conn = new SqlConnection(connectionstring))
-            {
-                conn.Open();
-                using (SqlCommand comm = new SqlCommand(Query + ";" + sSQLSelectAllAccounts() + ";" + sSQLSelectAccount() + ";" + sSQLSelectFollowUp(), conn))
-                {
-                    SqlDataAdapter da = new SqlDataAdapter(comm);
-                    DataSet ds = new DataSet();
-                    da.Fill(ds);
-
-                    return ds;
-                }
-            }
-        }
-        */
     }
 }

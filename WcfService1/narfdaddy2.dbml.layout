@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="narfdaddy2">
+  <DataContextMoniker Name="/narfdaddy2DataContext" />
+  <nestedChildShapes>
+    <classShape Id="c13ef515-a983-48c7-ba68-24450312b781" absoluteBounds="5, 2.75, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/narfdaddy2DataContext/ListBuilder1" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d36cbd3b-23e7-4ca3-b30a-caf93f8ea961" absoluteBounds="5.015, 3.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

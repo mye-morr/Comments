@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Text;
 using System.Globalization;
 using OfficeOpenXml;
+using System.IO;
 
 namespace TestPOSTWebService
 {
@@ -36,9 +37,21 @@ namespace TestPOSTWebService
                     var excel = new ExcelPackage(File1.PostedFile.InputStream);
                     var dt = excel.ToDataTable();
 
-                    var table = "Initial";
                     using (var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["CommentsConnectionString"].ConnectionString))
                     {
+
+                        using (SqlCommand cmd = new SqlCommand("Upsert_Initial"))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Connection = conn;
+                            cmd.Parameters.AddWithValue("@tblData", dt);
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                            conn.Close();
+                        }
+
+                        /* just regular update
+                        var table = "Initial";
                         var bulkCopy = new SqlBulkCopy(conn);
                         bulkCopy.DestinationTableName = table;
                         conn.Open();
@@ -58,6 +71,7 @@ namespace TestPOSTWebService
                         bulkCopy.BatchSize = 10000;
                         bulkCopy.BulkCopyTimeout = 0;
                         bulkCopy.WriteToServer(dt);
+                        */
                     }
                 }
 
@@ -418,7 +432,7 @@ namespace TestPOSTWebService
 
         protected string sSQLSelectAllAccounts()
         {
-            string sSQL = "SELECT * FROM (SELECT DISTINCT (STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + + ', ' + vcFuCommentBy +'|' + vcFuComment FROM FollowUp f WHERE f.numInitialRow = i.numRow ORDER BY datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) as FollowUpComments, (SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = numRow) as FollowUpDate, i.* FROM Initial i LEFT OUTER JOIN FollowUp f ON f.numInitialRow = i.numRow) as t";
+            string sSQL = "SELECT * FROM (SELECT DISTINCT (STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + COALESCE(+ ', ' + vcFuCommentBy,'') +'|' + vcFuComment FROM FollowUp f WHERE f.numInitialRow = i.numRow ORDER BY datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) as FollowUpComments, (SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = numRow) as FollowUpDate, i.* FROM Initial i LEFT OUTER JOIN FollowUp f ON f.numInitialRow = i.numRow) as t";
 
             string sSQLTail = txtCustomSQL.Text;
 
@@ -638,6 +652,50 @@ namespace TestPOSTWebService
             }
 
             return sRet;
+        }
+
+        protected void ExportToExcel_Click(object sender, EventArgs e)
+        {
+            var dtInitial = GetInitial();
+            ExcelPackage excel = new ExcelPackage();
+            var workSheet = excel.Workbook.Worksheets.Add("Products");
+            var totalCols = dtInitial.Columns.Count;
+            var totalRows = dtInitial.Rows.Count;
+
+            for (var col = 1; col <= totalCols; col++)
+            {
+                workSheet.Cells[1, col].Value = dtInitial.Columns[col - 1].ColumnName;
+            }
+
+            for (var row = 1; row <= totalRows; row++)
+            {
+                for (var col = 0; col < totalCols; col++)
+                {
+                    workSheet.Cells[row + 1, col + 1].Value = dtInitial.Rows[row - 1][col];
+                }
+            }
+
+            using (var memoryStream = new MemoryStream())
+            {
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;  filename=query.xlsx");
+                excel.SaveAs(memoryStream);
+                memoryStream.WriteTo(Response.OutputStream);
+                Response.Flush();
+                Response.End();
+            }
+        }
+
+        public DataTable GetInitial()
+        {
+            using (var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["CommentsConnectionString"].ConnectionString))
+            using (var cmd = new SqlCommand("SELECT * FROM (SELECT DISTINCT (STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + COALESCE(+ ', ' + vcFuCommentBy,'') +'|' + vcFuComment FROM FollowUp f WHERE f.numInitialRow = i.numRow ORDER BY datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) as FollowUpComments, (SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = numRow) as FollowUpDate, i.* FROM Initial i LEFT OUTER JOIN FollowUp f ON f.numInitialRow = i.numRow) as t", conn))
+            using (var adapter = new SqlDataAdapter(cmd))
+            {
+                var products = new DataTable();
+                adapter.Fill(products);
+                return products;
+            }
         }
     }
 }

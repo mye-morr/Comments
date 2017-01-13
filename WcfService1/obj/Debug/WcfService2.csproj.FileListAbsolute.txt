@@ -20,3 +20,4 @@ C:\Users\analystprogrammer2\documents\visual studio 2015\Projects\WcfService2\Wc
 C:\Users\analystprogrammer2\documents\visual studio 2015\Projects\WcfService2\WcfService1\obj\Debug\WcfService2.csprojResolveAssemblyReference.cache
 C:\Users\analystprogrammer2\documents\visual studio 2015\Projects\WcfService2\WcfService1\obj\Debug\WcfService1.dll
 C:\Users\analystprogrammer2\documents\visual studio 2015\Projects\WcfService2\WcfService1\obj\Debug\WcfService1.pdb
+C:\Users\analystprogrammer2\Documents\Visual Studio 2015\Projects\WcfService2\WcfService1\bin\WcfService1.dll.config

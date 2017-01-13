@@ -315,14 +315,14 @@
         <br />
         <div style="float:left; height:5%">
             <asp:TextBox ID="txtSearch" runat="server"></asp:TextBox>
-            <asp:Button ID="btnPreview" runat="server" Text="Preview" OnClick="btnPreview_Click" />
+            <asp:Button ID="btnPreview" runat="server" Text="View" OnClick="btnPreview_Click" />
             <asp:Button ID="btnClear" runat="server" Text="Clear" OnClick="btnClear_Click" />
             &nbsp;&nbsp;&nbsp;
 
 	  <input runat="server" id="Hidden1" type="hidden" />
 	  <input runat="server" id="File1" type="file" onchange="setHiddenValue()" style="display:none" />
 	  <input id="Button2" type="button" onclick="triggerFileUpload()" value="Up" />
-	  <input id="Button3" type="button" onclick="triggerFileUpload()" value="Down" />
+      <asp:Button id="Button3" runat="server" text="Down" OnClick="ExportToExcel_Click" />
 
         </div>
         <div style="float:right; max-height:5%; margin-right:10px">
