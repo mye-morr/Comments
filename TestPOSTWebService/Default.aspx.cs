@@ -28,6 +28,12 @@ namespace TestPOSTWebService
                 //Bind the GridView control to the data source.
                 GridView1.DataSource = Session["AccountsTable"];
                 GridView1.DataBind();
+
+                if(!String.IsNullOrEmpty(Request.QueryString["vcAcctNo"]))
+                {
+                    txtSearch.Text = Request.QueryString["vcAcctNo"];
+                    viewAcct();
+                }
             }
             else
             {
@@ -600,6 +606,11 @@ namespace TestPOSTWebService
             if (sender is LinkButton)
                 txtSearch.Text = ((LinkButton)sender).Text;
 
+            viewAcct();
+        }
+
+        protected void viewAcct()
+        {
             DataSet ds = GridDataTable();
 
             // Persist the table in the Session object,
@@ -623,9 +634,6 @@ namespace TestPOSTWebService
 
                 txtNumInitialRow.Text = ds.Tables[1].Rows[0]["numRow"].ToString();
             }
-
-
-            //Refresh_Sample_Dialog(dt);
         }
 
         protected void btnCustomSQL_Click(object sender, EventArgs e)
