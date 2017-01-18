@@ -671,9 +671,22 @@ namespace TestPOSTWebService
             {
                 for (var col = 0; col < totalCols; col++)
                 {
-                    workSheet.Cells[row + 1, col + 1].Value = dtInitial.Rows[row - 1][col];
+                    if (col == 0)
+                    {
+                        workSheet.Cells[row + 1, col + 1].Value = dtInitial.Rows[row - 1][col].ToString()
+                            .Replace("||", Environment.NewLine + Environment.NewLine).Replace("|", Environment.NewLine + "   ");
+                    }
+                    else
+                    {
+                        workSheet.Cells[row + 1, col + 1].Value = dtInitial.Rows[row - 1][col];
+                    }
                 }
             }
+
+            workSheet.Column(2).Style.Numberformat.Format = "yyyy-mm-dd";
+            workSheet.Column(4).Style.Numberformat.Format = "yyyy-mm-dd";
+
+            workSheet.Cells.AutoFitColumns();
 
             using (var memoryStream = new MemoryStream())
             {
@@ -689,7 +702,7 @@ namespace TestPOSTWebService
         public DataTable GetInitial()
         {
             using (var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["CommentsConnectionString"].ConnectionString))
-            using (var cmd = new SqlCommand("SELECT * FROM (SELECT DISTINCT (STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + COALESCE(+ ', ' + vcFuCommentBy,'') +'|' + vcFuComment FROM FollowUp f WHERE f.numInitialRow = i.numRow ORDER BY datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) as FollowUpComments, (SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = numRow) as FollowUpDate, i.* FROM Initial i LEFT OUTER JOIN FollowUp f ON f.numInitialRow = i.numRow) as t", conn))
+            using (var cmd = new SqlCommand(sSQLSelectAllAccounts(), conn))
             using (var adapter = new SqlDataAdapter(cmd))
             {
                 var products = new DataTable();

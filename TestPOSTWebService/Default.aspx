@@ -326,7 +326,7 @@
 
         </div>
         <div style="float:right; max-height:5%; margin-right:10px">
-<a href="http://192.168.161.126/tips/" target="popup" onclick="window.open('http://192.168.161.126/tips/','popup','width=800,height=800'); return false;"><img src="Img/help_icon.jpg" style="height:15px" /></a>
+<a href="http://192.168.161.126/tips/?order=asc" target="popup" onclick="window.open('http://192.168.161.126/tips/?order=asc','popup','width=800,height=800'); return false;"><img src="Img/help_icon.jpg" style="height:15px" /></a>
             <asp:Label ID="lblCustomSQL" runat="server" Text="Sort / Filter:"/>
             <asp:TextBox ID="txtCustomSQL" runat="server" Width="350px"></asp:TextBox>
             <asp:Button ID="btnQuery" runat="server" Text="Run" OnClick="btnCustomSQL_Click" />
