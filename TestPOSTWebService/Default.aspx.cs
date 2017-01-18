@@ -12,6 +12,7 @@ using System.Text;
 using System.Globalization;
 using OfficeOpenXml;
 using System.IO;
+using System.Drawing;
 
 namespace TestPOSTWebService
 {
@@ -684,6 +685,14 @@ namespace TestPOSTWebService
                         workSheet.Cells[row + 1, col + 1].Value = dtInitial.Rows[row - 1][col].ToString()
                             .Replace("||", Environment.NewLine + Environment.NewLine).Replace("|", Environment.NewLine + "   ");
                     }
+                    else if (col == 7)
+                    {                        
+                        workSheet.Cells[row + 1, col + 1].Formula = "HYPERLINK(\"" 
+                            + "http://192.168.161.126/Default.aspx?vcAcctNo=" + dtInitial.Rows[row - 1][col]
+                            + "\",\"" 
+                            + dtInitial.Rows[row - 1][col].ToString()
+                            + "\")";
+                    }
                     else
                     {
                         workSheet.Cells[row + 1, col + 1].Value = dtInitial.Rows[row - 1][col];
@@ -693,6 +702,8 @@ namespace TestPOSTWebService
 
             workSheet.Column(2).Style.Numberformat.Format = "yyyy-mm-dd";
             workSheet.Column(4).Style.Numberformat.Format = "yyyy-mm-dd";
+            workSheet.Column(8).Style.Font.UnderLine = true;
+            workSheet.Column(8).Style.Font.Color.SetColor(Color.Blue);
 
             workSheet.Cells.AutoFitColumns();
 
