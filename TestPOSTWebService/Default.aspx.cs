@@ -52,6 +52,7 @@ namespace TestPOSTWebService
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Connection = conn;
                             cmd.Parameters.AddWithValue("@tblData", dt);
+                            cmd.CommandTimeout = 0;
                             conn.Open();
                             cmd.ExecuteNonQuery();
                             conn.Close();
@@ -445,20 +446,30 @@ namespace TestPOSTWebService
 
             if (!sSQLTail.Equals(""))
             {
-                if (sSQLTail.Length >= 8)
+                if (sSQLTail.Length >= 6)
                 {
-                    if (sSQLTail.Substring(0, 8).Equals("ORDER BY"))
+                    if (sSQLTail.Substring(0, 6).Equals("DELETE"))
                     {
-                        sSQL += " " + sSQLTail;
+                        // do nothing for DELETE query
                     }
                     else
                     {
-                        sSQL += " WHERE " + sSQLTail;
+                        if (sSQLTail.Length >= 8)
+                        {
+                            if (sSQLTail.Substring(0, 8).Equals("ORDER BY"))
+                            {
+                                sSQL += " " + sSQLTail;
+                            }
+                            else
+                            {
+                                sSQL += " WHERE " + sSQLTail;
+                            }
+                        }
+                        else
+                        {
+                            sSQL += " WHERE " + sSQLTail;
+                        }
                     }
-                }
-                else
-                {
-                    sSQL += " WHERE " + sSQLTail;
                 }
             }
 
@@ -640,6 +651,32 @@ namespace TestPOSTWebService
         protected void btnCustomSQL_Click(object sender, EventArgs e)
         {
             txtSearch.Text = "";
+
+            string sSQLTail = txtCustomSQL.Text;
+
+            if (!sSQLTail.Equals(""))
+            {
+                if (sSQLTail.Length >= 6)
+                {
+                    if (sSQLTail.Substring(0, 6).Equals("DELETE"))
+                    {
+                        sSQLTail = sSQLTail.Replace("DELETE", "DELETE FROM Initial WHERE");
+
+                        using (var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["CommentsConnectionString"].ConnectionString))
+                        {
+                            using (var cmd = new SqlCommand(sSQLTail, conn))
+                            {
+                                cmd.CommandType = CommandType.Text;
+                                conn.Open();
+                                int rowsAffected = cmd.ExecuteNonQuery();
+                                conn.Close();
+                            }
+                        }
+
+                        txtCustomSQL.Text = "";
+                    }
+                }
+            }
 
             DataSet ds = GridDataTable();
 
