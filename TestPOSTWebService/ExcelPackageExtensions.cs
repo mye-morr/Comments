@@ -31,7 +31,22 @@ namespace TestPOSTWebService
                     if (!sCol.Equals("numRow")
                         && !sCol.Equals("decVariance")) {
                         dictCols.Add(sCol, true);
-                        table.Columns.Add(sCol);
+
+                        var sExamine1 = sCol.Substring(0, 3);
+
+                        if (sCol.Substring(0, 3).Equals("dec"))
+                        {
+                            table.Columns.Add(sCol,typeof(decimal));
+
+                        }
+                        else if (sCol.Substring(0, 3).Equals("dat"))
+                        {
+                            table.Columns.Add(sCol,typeof(DateTime));
+                        }
+                        else
+                        {
+                            table.Columns.Add(sCol);
+                        }
                     }            
                 }
             }
@@ -50,9 +65,6 @@ namespace TestPOSTWebService
                     // source columns could be in any order :-\
                     for (int j = 1; j <= workSheet.Dimension.End.Column; j++)
                     {
-                        var sExamine1 = dictCols.Keys.ElementAt(i);
-                        var sExamine2 = workSheet.Cells[1, j].Value.ToString();
-
                         if (dictCols.Keys.ElementAt(i)
                             .Equals(workSheet.Cells[1, j].Value.ToString()))
                         {

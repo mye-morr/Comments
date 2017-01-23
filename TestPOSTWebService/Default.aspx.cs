@@ -440,7 +440,7 @@ namespace TestPOSTWebService
 
         protected string sSQLSelectAllAccounts()
         {
-            string sSQL = "SELECT * FROM (SELECT DISTINCT (STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + COALESCE(+ ', ' + vcFuCommentBy,'') +'|' + vcFuComment FROM FollowUp f WHERE f.numInitialRow = i.numRow ORDER BY datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) as FollowUpComments, (SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = numRow) as FollowUpDate, i.* FROM Initial i LEFT OUTER JOIN FollowUp f ON f.numInitialRow = i.numRow) as t";
+            string sSQL = "SELECT TOP 1000 * FROM (SELECT DISTINCT (STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + COALESCE(+ ', ' + vcFuCommentBy,'') +'|' + vcFuComment FROM FollowUp f WHERE f.numInitialRow = i.numRow ORDER BY datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) as FollowUpComments, (SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = numRow) as FollowUpDate, i.* FROM Initial i LEFT OUTER JOIN FollowUp f ON f.numInitialRow = i.numRow) as t";
 
             string sSQLTail = txtCustomSQL.Text;
 
