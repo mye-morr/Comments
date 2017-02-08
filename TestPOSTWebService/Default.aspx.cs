@@ -58,28 +58,6 @@ namespace TestPOSTWebService
                             conn.Close();
                         }
 
-                        /* just regular update
-                        var table = "Initial";
-                        var bulkCopy = new SqlBulkCopy(conn);
-                        bulkCopy.DestinationTableName = table;
-                        conn.Open();
-                        var schema = conn.GetSchema("Columns", new[] { null, null, table, null });
-                        foreach (DataColumn sourceColumn in dt.Columns)
-                        {
-                            foreach (DataRow row in schema.Rows)
-                            {
-                                if (string.Equals(sourceColumn.ColumnName, (string)row["COLUMN_NAME"], StringComparison.OrdinalIgnoreCase))
-                                {
-                                    bulkCopy.ColumnMappings.Add(sourceColumn.ColumnName, (string)row["COLUMN_NAME"]);
-                                    break;
-                                }
-                            }
-                        }
-
-                        bulkCopy.BatchSize = 10000;
-                        bulkCopy.BulkCopyTimeout = 0;
-                        bulkCopy.WriteToServer(dt);
-                        */
                     }
                 }
 
@@ -96,32 +74,6 @@ namespace TestPOSTWebService
             }
         }
 
-        /*
-        protected void Refresh_Sample_Dialog(DataTable dt)
-        {
-            TableHeaderRow thRow = new TableHeaderRow();
-            TableHeaderCell thCell = new TableHeaderCell();
-            thCell.Text = "Sample Comments Dialog";
-            thRow.Cells.Add(thCell);
-            Table1.Rows.Add(thRow);
-
-            List<Comment> listComments = dt.DataTableToList<Comment>();
-            foreach (Comment comment in listComments)
-            {
-                TableRow row = new TableRow();
-                TableCell cell = new TableCell();
-
-                StringBuilder sb = new StringBuilder("");
-                sb.AppendFormat("{0}, {1}", comment.datComment, comment.vcCommentBy);
-
-                sb.AppendLine("<br/><br/>");
-                sb.AppendLine(comment.vcComment);
-                cell.Text = sb.ToString();
-                row.Cells.Add(cell);
-                Table1.Rows.Add(row);
-            }
-        }
-        */
 
         protected void DataList4_EditCommand(Object sender, DataListCommandEventArgs e)
         {
@@ -448,7 +400,7 @@ namespace TestPOSTWebService
             {
                 if (sSQLTail.Length >= 6)
                 {
-                    if (sSQLTail.Substring(0, 6).Equals("DELETE"))
+                    if (sSQLTail.Substring(0, 6).ToUpper().Equals("DELETE"))
                     {
                         // do nothing for DELETE query
                     }
@@ -456,7 +408,7 @@ namespace TestPOSTWebService
                     {
                         if (sSQLTail.Length >= 8)
                         {
-                            if (sSQLTail.Substring(0, 8).Equals("ORDER BY"))
+                            if (sSQLTail.Substring(0, 8).ToUpper().Equals("ORDER BY"))
                             {
                                 sSQL += " " + sSQLTail;
                             }
@@ -658,7 +610,7 @@ namespace TestPOSTWebService
             {
                 if (sSQLTail.Length >= 6)
                 {
-                    if (sSQLTail.Substring(0, 6).Equals("DELETE"))
+                    if (sSQLTail.Substring(0, 6).ToUpper().Equals("DELETE"))
                     {
                         sSQLTail = sSQLTail.Replace("DELETE", "DELETE FROM Initial WHERE");
 

@@ -29,7 +29,8 @@ namespace TestPOSTWebService
                     String sCol = (string)row["COLUMN_NAME"];
 
                     if (!sCol.Equals("numRow")
-                        && !sCol.Equals("decVariance")) {
+                        && !sCol.Equals("decVariance"))
+                    {
                         dictCols.Add(sCol, true);
 
                         var sExamine1 = sCol.Substring(0, 3);
