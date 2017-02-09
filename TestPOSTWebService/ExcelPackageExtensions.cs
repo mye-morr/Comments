@@ -74,6 +74,7 @@ namespace TestPOSTWebService
                             break;
                         }
 
+                        //added by rb
                         if (workSheet.Cells[1, j].Text.Substring(0, 2).Equals("DX") && dictCols.Keys.ElementAt(i).Equals("vcDX"))
                         {
                             dx = dx + workSheet.Cells[rowNumber, j].Text + "|";
