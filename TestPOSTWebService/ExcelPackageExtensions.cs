@@ -13,7 +13,6 @@ namespace TestPOSTWebService
     {
         public static DataTable ToDataTable(this ExcelPackage package)
         {
-
             ExcelWorksheet workSheet = package.Workbook.Worksheets.First();
             DataTable table = new DataTable();
 
@@ -61,6 +60,8 @@ namespace TestPOSTWebService
                 // sproc is expecting entire schema for upsert
                 for (int i = 0; i < dictCols.Count; i++)
                 {
+                    String dx = System.String.Empty;
+
                     newRow[i] = DBNull.Value;
 
                     // source columns could be in any order :-\
@@ -72,7 +73,15 @@ namespace TestPOSTWebService
                             newRow[i] = workSheet.Cells[rowNumber, j].Text;
                             break;
                         }
+
+                        if (workSheet.Cells[1, j].Text.Substring(0, 2).Equals("DX") && dictCols.Keys.ElementAt(i).Equals("vcDX"))
+                        {
+                            dx = dx + workSheet.Cells[rowNumber, j].Text + "|";
+                            newRow[i] = dx;
+                            //break;
+                        }
                     }
+
                 }
 
                 table.Rows.Add(newRow);
