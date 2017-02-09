@@ -30,7 +30,7 @@ namespace TestPOSTWebService
                 GridView1.DataSource = Session["AccountsTable"];
                 GridView1.DataBind();
 
-                if(!String.IsNullOrEmpty(Request.QueryString["vcAcctNo"]))
+                if (!String.IsNullOrEmpty(Request.QueryString["vcAcctNo"]))
                 {
                     txtSearch.Text = Request.QueryString["vcAcctNo"];
                     viewAcct();
@@ -39,10 +39,12 @@ namespace TestPOSTWebService
             else
             {
                 String foo = this.Hidden1.Value;
-                if(foo.Length > 0) {
+                if (foo.Length > 0)
+                {
 
                     var excel = new ExcelPackage(File1.PostedFile.InputStream);
                     var dt = excel.ToDataTable();
+                    var dtf = excel.ToFollowUpDataTable();
 
                     using (var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["CommentsConnectionString"].ConnectionString))
                     {
@@ -58,6 +60,16 @@ namespace TestPOSTWebService
                             conn.Close();
                         }
 
+                        using (SqlCommand cmd = new SqlCommand("Upsert_FollowUp"))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Connection = conn;
+                            cmd.Parameters.AddWithValue("@tblData", dtf);
+                            cmd.CommandTimeout = 0;
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                            conn.Close();
+                        }
                     }
                 }
 
@@ -456,7 +468,7 @@ namespace TestPOSTWebService
         {
             if (!txtNumInitialRow.Text.Equals(""))
             {
-                string[] formats = {"M/d/yyyy","M/dd/yyyy","MM/d/yyyy","MM/dd/yyyy"};
+                string[] formats = { "M/d/yyyy", "M/dd/yyyy", "MM/d/yyyy", "MM/dd/yyyy" };
 
                 DateTime dateValue;
                 if (DateTime.TryParseExact(txtDatFollowUp.Text, formats, new CultureInfo("en-US"), DateTimeStyles.None, out dateValue)
@@ -550,7 +562,7 @@ namespace TestPOSTWebService
         {
             txtSearch.Text = "";
             txtCustomSQL.Text = "";
-            
+
             Session["AccountsTable"] = GridDataTable().Tables[0];
             GridView1.DataSource = Session["AccountsTable"];
             GridView1.DataBind();
@@ -675,10 +687,10 @@ namespace TestPOSTWebService
                             .Replace("||", Environment.NewLine + Environment.NewLine).Replace("|", Environment.NewLine + "   ");
                     }
                     else if (col == 7)
-                    {                        
-                        workSheet.Cells[row + 1, col + 1].Formula = "HYPERLINK(\"" 
+                    {
+                        workSheet.Cells[row + 1, col + 1].Formula = "HYPERLINK(\""
                             + "http://192.168.161.126/Default.aspx?vcAcctNo=" + dtInitial.Rows[row - 1][col]
-                            + "\",\"" 
+                            + "\",\""
                             + dtInitial.Rows[row - 1][col].ToString()
                             + "\")";
                     }
