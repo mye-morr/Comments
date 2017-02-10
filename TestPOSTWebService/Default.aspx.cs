@@ -60,6 +60,7 @@ namespace TestPOSTWebService
                             conn.Close();
                         }
 
+
                         using (SqlCommand cmd = new SqlCommand("Upsert_FollowUp"))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
@@ -70,6 +71,7 @@ namespace TestPOSTWebService
                             cmd.ExecuteNonQuery();
                             conn.Close();
                         }
+
                     }
                 }
 
@@ -404,7 +406,11 @@ namespace TestPOSTWebService
 
         protected string sSQLSelectAllAccounts()
         {
-            string sSQL = "SELECT TOP 1000 * FROM (SELECT DISTINCT (STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + COALESCE(+ ', ' + vcFuCommentBy,'') +'|' + vcFuComment FROM FollowUp f WHERE f.numInitialRow = i.numRow ORDER BY datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) as FollowUpComments, (SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = numRow) as FollowUpDate, i.* FROM Initial i LEFT OUTER JOIN FollowUp f ON f.numInitialRow = i.numRow) as t";
+            //string sSQL = "SELECT TOP 1000 * FROM (SELECT DISTINCT (STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + COALESCE(+ ', ' + vcFuCommentBy,'') +'|' + vcFuComment FROM FollowUp f WHERE f.numInitialRow = i.numRow ORDER BY datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) as FollowUpComments, (SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = numRow) as FollowUpDate, i.* FROM Initial i LEFT OUTER JOIN FollowUp f ON f.numInitialRow = i.numRow) as t";
+
+            //updated sSQL query RB//
+            string sSQL = "SELECT * FROM (SELECT DISTINCT(STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + COALESCE(+ ', ' + vcFuCommentBy,'') +'|' + vcFuComment FROM FollowUp f2 WHERE f2.numInitialRow =I.numRow ORDER BY datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) AS FollowUpComments,(SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = numRow) as FollowUpDate,[numRow],[datComment],[timComment],[vcCommentBy],[vcComment],[vcAcctNo],[decVariance],[vcClient],[vcPatName],[vcPatSSN],[vcPatIns],[vcPatInsIdNo],[decTotalChgs],[decExpected],[vcUpCategory],'DX_' + cast(ROW_NUMBER() OVER (PARTITION BY numRow ORDER BY numRow)AS VARCHAR(20)) as PIVHEAD ,SPLIT_DX.value DXNEW  FROM [dbo].[Initial] I OUTER APPLY STRING_SPLIT(vcDX,'|' ) AS SPLIT_DX) AS I PIVOT(MAX(DXNEW) FOR PIVHEAD IN ([Dx_1],[Dx_2],[Dx_3],[Dx_4],[Dx_5],[Dx_6],[Dx_7],[Dx_8],[Dx_9],[Dx_10])) AS IP GROUP BY FollowUpComments,FollowUpDate,[numRow], [datComment],[timComment],[vcCommentBy],[vcComment],[vcAcctNo],[decVariance],[vcClient],[vcPatName],[vcPatSSN],[vcPatIns],[vcPatInsIdNo],[decTotalChgs],[decExpected],[vcUpCategory],[Dx_1],[Dx_2],[Dx_3],[Dx_4],[Dx_5],[Dx_6],[Dx_7],[Dx_8],[Dx_9],[Dx_10]";
+
 
             string sSQLTail = txtCustomSQL.Text;
 
@@ -686,7 +692,7 @@ namespace TestPOSTWebService
                         workSheet.Cells[row + 1, col + 1].Value = dtInitial.Rows[row - 1][col].ToString()
                             .Replace("||", Environment.NewLine + Environment.NewLine).Replace("|", Environment.NewLine + "   ");
                     }
-                    else if (col == 7)
+                    else if (col == 7) //RB Changed from 7 to 8//
                     {
                         workSheet.Cells[row + 1, col + 1].Formula = "HYPERLINK(\""
                             + "http://192.168.161.126/Default.aspx?vcAcctNo=" + dtInitial.Rows[row - 1][col]
