@@ -409,9 +409,7 @@ namespace TestPOSTWebService
             //string sSQL = "SELECT TOP 1000 * FROM (SELECT DISTINCT (STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + COALESCE(+ ', ' + vcFuCommentBy,'') +'|' + vcFuComment FROM FollowUp f WHERE f.numInitialRow = i.numRow ORDER BY datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) as FollowUpComments, (SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = numRow) as FollowUpDate, i.* FROM Initial i LEFT OUTER JOIN FollowUp f ON f.numInitialRow = i.numRow) as t";
 
             //updated sSQL query RB//
-            string sSQL = "SELECT * FROM (SELECT DISTINCT(STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + COALESCE(+ ', ' + vcFuCommentBy,'') +'|' + vcFuComment FROM FollowUp f2 WHERE f2.numInitialRow =I.numRow ORDER BY datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) AS FollowUpComments,(SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = numRow) as FollowUpDate,[numRow],[datComment],[timComment],[vcCommentBy],[vcComment],[vcAcctNo],[decVariance],[vcClient],[vcPatName],[vcPatSSN],[vcPatIns],[vcPatInsIdNo],[decTotalChgs],[decExpected],[vcUpCategory],'DX_' + cast(ROW_NUMBER() OVER (PARTITION BY numRow ORDER BY numRow)AS VARCHAR(20)) as PIVHEAD ,SPLIT_DX.value DXNEW  FROM [dbo].[Initial] I OUTER APPLY STRING_SPLIT(vcDX,'|' ) AS SPLIT_DX) AS I PIVOT(MAX(DXNEW) FOR PIVHEAD IN ([Dx_1],[Dx_2],[Dx_3],[Dx_4],[Dx_5],[Dx_6],[Dx_7],[Dx_8],[Dx_9],[Dx_10])) AS IP GROUP BY FollowUpComments,FollowUpDate,[numRow], [datComment],[timComment],[vcCommentBy],[vcComment],[vcAcctNo],[decVariance],[vcClient],[vcPatName],[vcPatSSN],[vcPatIns],[vcPatInsIdNo],[decTotalChgs],[decExpected],[vcUpCategory],[Dx_1],[Dx_2],[Dx_3],[Dx_4],[Dx_5],[Dx_6],[Dx_7],[Dx_8],[Dx_9],[Dx_10]";
-
-
+            string sSQL = "SELECT * FROM (	SELECT DISTINCT (STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + COALESCE(+ ', ' + vcFuCommentBy,'') +'|' + vcFuComment FROM FollowUp f2 WHERE f2.numInitialRow =I.numRow ORDER BY datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) AS FollowUpComments,(SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = numRow) as FollowUpDate,[numRow],[datComment],[timComment],[vcCommentBy],[vcComment],[vcAcctNo],[decVariance],[vcClient],[vcPatName],[vcPatSSN],[vcPatIns],[vcPatInsIdNo],[decTotalChgs],[decExpected],[vcUpCategory],'DX' + cast(ROW_NUMBER() OVER (PARTITION BY numRow ORDER BY numRow)AS VARCHAR(20)) as PIVHEAD ,SPLIT_DX.value DXNEW FROM [dbo].[Initial] I OUTER APPLY STRING_SPLIT(vcDX,'|' ) AS SPLIT_DX) AS I PIVOT(MAX(DXNEW) FOR PIVHEAD IN ([DX1],[DX2],[DX3],[DX4],[DX5],[DX6],[DX7],[DX8],[DX9],[DX10],[DX11],[DX12],[DX13],[DX14],[DX15],[DX16],[DX17],[DX18],[DX19],[DX20],[DX21],[DX22],[DX23],[DX24],[DX25],[DX26],[DX27],[DX28],[DX29],[DX30])) AS IP GROUP BY FollowUpComments,FollowUpDate,[numRow], [datComment],[timComment],[vcCommentBy],[vcComment],[vcAcctNo],[decVariance],[vcClient],[vcPatName],[vcPatSSN],[vcPatIns],[vcPatInsIdNo],[decTotalChgs],[decExpected],[vcUpCategory],[Dx1],[Dx2],[Dx3],[Dx4],[Dx5],[Dx6],[Dx7],[Dx8],[Dx9],[Dx10],[Dx11],[Dx12],[Dx13],[Dx14],[Dx15],[Dx16],[Dx17],[Dx18],[Dx19],[Dx20],[Dx21],[Dx22],[Dx23],[Dx24],[Dx25],[Dx26],[Dx27],[Dx28],[Dx29],[Dx30]";
             string sSQLTail = txtCustomSQL.Text;
 
             if (!sSQLTail.Equals(""))
@@ -435,6 +433,7 @@ namespace TestPOSTWebService
                                 sSQL += " WHERE " + sSQLTail;
                             }
                         }
+
                         else
                         {
                             sSQL += " WHERE " + sSQLTail;
