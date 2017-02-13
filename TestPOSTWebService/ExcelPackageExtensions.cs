@@ -64,7 +64,7 @@ namespace TestPOSTWebService
                 // sproc is expecting entire schema for upsert
                 for (int i = 0; i < dictCols.Count; i++)
                 {
-                    string dx = "";
+                    string dx="", px="";
                     newRow[i] = DBNull.Value;
 
                     // source columns could be in any order :-\
@@ -78,11 +78,12 @@ namespace TestPOSTWebService
                         }
 
                         //added by rb
-                        if (workSheet.Cells[1, j].Text.Contains("DX") && dictCols.Keys.ElementAt(i).Equals("vcDX"))
-                        {
-                            dx = dx + workSheet.Cells[rowNumber, j].Text + "|";
-                            newRow[i] = dx;
-                        }
+                        //if (workSheet.Cells[1, j].Text.Contains("DX") && dictCols.Keys.ElementAt(i).Equals("vcRevCD"))
+                        //{
+                        //    dx = dx + workSheet.Cells[rowNumber, j].Text + "|";
+                        //    newRow[i] = dx;
+                        //}
+
 
                     }
                 }
