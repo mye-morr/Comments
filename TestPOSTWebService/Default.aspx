@@ -197,6 +197,8 @@
                             </td>
                             <td>
                                 <asp:TextBox ID="txtNumInitialRow" runat="server" onkeydown = "return (event.keyCode!=13);" visible="false" />
+                                <asp:TextBox ID="txtHiddenVcAcctNo" runat="server" onkeydown = "return (event.keyCode!=13);" visible="false" />
+                                <asp:TextBox ID="txtHiddenVcClient" runat="server" onkeydown = "return (event.keyCode!=13);" visible="false" />
                             </td>
                             <td></td>
                             <td></td>

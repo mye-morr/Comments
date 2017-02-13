@@ -130,6 +130,24 @@ namespace TestPOSTWebService {
         protected global::System.Web.UI.WebControls.TextBox txtNumInitialRow;
         
         /// <summary>
+        /// txtHiddenVcAcctNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtHiddenVcAcctNo;
+        
+        /// <summary>
+        /// txtHiddenVcClient control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtHiddenVcClient;
+        
+        /// <summary>
         /// GridView2 control.
         /// </summary>
         /// <remarks>

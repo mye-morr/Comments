@@ -144,14 +144,35 @@ namespace TestPOSTWebService
             String[] sxFollowUpFields;
             StringBuilder sbValues = new StringBuilder();
 
-            // source columns could be in any order :-\
+            int idxVcAcctNo = 0;
+            int idxVcClient = 0;
+
+            // find key fields for merge
+            for (int j = 1; j <= workSheet.Dimension.End.Column; j++)
+            {
+                sBuf = workSheet.Cells[1, j].Text;
+
+                if (sBuf.Length >= 8)
+                {
+                    if (sBuf.Substring(0, 8).Equals("vcAcctNo"))
+                    {
+                        idxVcAcctNo = j;
+                    }
+                    else if (sBuf.Substring(0, 8).Equals("vcClient"))
+                    {
+                        idxVcClient = j;
+                    }
+                }
+            }
+
+            // find any follow-up comment fields
             for (int j = 1; j <= workSheet.Dimension.End.Column; j++)
             {
                 sBuf = workSheet.Cells[1, j].Text;
 
                 if (sBuf.Length >= 12)
                 {
-                    if (sBuf.Substring(0, 12).Equals("Add Comment,"))
+                    if (sBuf.Substring(0, 12).ToUpper().Equals("ADD COMMENT,"))
                     {
 
                         sDate = "";
@@ -181,15 +202,20 @@ namespace TestPOSTWebService
                                     newRow[i] = DBNull.Value;
                                 }
 
-                                newRow[0] = '2';
                                 newRow[1] = sDate;
                                 newRow[3] = sBy;
                                 newRow[4] = sComment;
 
                                 // temporary values for testing merge
-                                newRow[dictCols.Count - 1] = DBNull.Value;
-                                newRow[dictCols.Count - 2] = "1234";
+                                if (idxVcClient > 0)
+                                    newRow[dictCols.Count - 1] = workSheet.Cells[rowNumber, idxVcClient].Text.Trim();
+                                else
+                                    newRow[dictCols.Count - 1] = DBNull.Value;
 
+                                if(idxVcAcctNo > 0)
+                                    newRow[dictCols.Count - 2] = workSheet.Cells[rowNumber, idxVcAcctNo].Text.Trim();
+                                else
+                                    newRow[dictCols.Count - 2] = DBNull.Value;
                                 table.Rows.Add(newRow);
                             }
                         }

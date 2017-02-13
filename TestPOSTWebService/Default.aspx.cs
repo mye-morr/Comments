@@ -409,7 +409,7 @@ namespace TestPOSTWebService
             //string sSQL = "SELECT TOP 1000 * FROM (SELECT DISTINCT (STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + COALESCE(+ ', ' + vcFuCommentBy,'') +'|' + vcFuComment FROM FollowUp f WHERE f.numInitialRow = i.numRow ORDER BY datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) as FollowUpComments, (SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = numRow) as FollowUpDate, i.* FROM Initial i LEFT OUTER JOIN FollowUp f ON f.numInitialRow = i.numRow) as t";
 
             //updated sSQL query RB//
-            string sSQL = "WITH DE AS (SELECT * FROM(SELECT I.[numRow], (CASE WHEN cast(ROW_NUMBER() OVER(PARTITION BY I.numRow ORDER BY I.numRow)AS VARCHAR(20)) = '1' THEN 'ADM_DX' ELSE('DX' + cast(ROW_NUMBER() OVER(PARTITION BY I.numRow ORDER BY I.numRow) - 1 AS VARCHAR(20))) END) as PIVHEAD1, P1.VALUE PV  FROM[dbo].[Initial]  I outer APPLY STRING_SPLIT(vcDX, '|') P1 ) AS I PIVOT(MAX(PV) FOR PIVHEAD1 IN([ADM_DX],[DX1],[DX2],[DX3],[DX4],[DX5],[DX6],[DX7],[DX8],[DX9],[DX10],[DX11],[DX12],[DX13],[DX14],[DX15],[DX16],[DX17],[DX18],[DX19],[DX20],[DX21],[DX22],[DX23],[DX24],[DX25],[DX26],[DX27],[DX28],[DX29],[DX30])) PV1 ), PX AS (SELECT * FROM(SELECT I2.[numRow], ('PX' + cast(ROW_NUMBER() OVER(PARTITION BY I2.numRow ORDER BY I2.numRow)AS VARCHAR(20))) as PIVHEAD2, P2.VALUE PV2 FROM[dbo].[Initial] I2 outer APPLY STRING_SPLIT(vcPX, '|') P2) AS I PIVOT(MAX(PV2) FOR PIVHEAD2 IN([PX1],[PX2],[PX3],[PX4],[PX5],[PX6],[PX7],[PX8],[PX9],[PX10])) PV1 )SELECT(SELECT DISTINCT(STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + COALESCE(+', ' + vcFuCommentBy, '') + '|' + vcFuComment  FROM FollowUp f2 WHERE f2.numInitialRow = I1.numRow ORDER BY I1.datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) )AS FollowUpComments,(SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = I1.numRow) as FollowUpDate,I1.[numRow],I1.[datComment],I1.[timComment],I1.[vcCommentBy],I1.[vcComment],I1.[vcAcctNo],I1.[decVariance],I1.[vcClient],I1.[vcPatName],I1.[vcPatSSN],I1.[vcPatIns],I1.[vcPatInsIdNo],I1.[decTotalChgs],I1.[decExpected],I1.[vcUpCategory] ,DE.[ADM_DX],DE.[DX1],DE.[DX2],DE.[DX3],DE.[DX4],DE.[DX5],DE.[DX6],DE.[DX7],DE.[DX8],DE.[DX9],DE.[DX10],DE.[DX11],DE.[DX12],DE.[DX13],DE.[DX14],DE.[DX15],DE.[DX16],DE.[DX17],DE.[DX18],DE.[DX19],DE.[DX20],DE.[DX21],DE.[DX22],DE.[DX23],DE.[DX24],DE.[DX25],DE.[DX26],DE.[DX27],DE.[DX28],DE.[DX29],DE.[DX30],PX.[PX1],PX.[PX2],PX.[PX3],PX.[PX4],PX.[PX5],PX.[PX6],PX.[PX7],PX.[PX8],PX.[PX9],PX.[PX10] FROM DBO.INITIAL I1 INNER JOIN DE ON I1.numRow = DE.numRow  INNER JOIN px ON I1.numRow = PX.numRow";
+            string sSQL = "SELECT * FROM (	SELECT DISTINCT (STUFF((SELECT '||' + CONVERT(VARCHAR(10), datFuComment) + COALESCE(+ ', ' + vcFuCommentBy,'') +'|' + vcFuComment FROM FollowUp f2 WHERE f2.numInitialRow =I.numRow ORDER BY datComment FOR XML PATH(''), TYPE, ROOT).value('root[1]', 'nvarchar(max)'), 1, 2, '')) AS FollowUpComments,(SELECT MAX(datFollowUp) FROM FollowUp f WHERE f.numInitialRow = numRow) as FollowUpDate,[numRow],[datComment],[timComment],[vcCommentBy],[vcComment],[vcAcctNo],[decVariance],[vcClient],[vcPatName],[vcPatSSN],[vcPatIns],[vcPatInsIdNo],[decTotalChgs],[decExpected],[vcUpCategory],'DX' + cast(ROW_NUMBER() OVER (PARTITION BY numRow ORDER BY numRow)AS VARCHAR(20)) as PIVHEAD ,SPLIT_DX.value DXNEW FROM [dbo].[Initial] I OUTER APPLY STRING_SPLIT(vcDX,'|' ) AS SPLIT_DX) AS I PIVOT(MAX(DXNEW) FOR PIVHEAD IN ([DX1],[DX2],[DX3],[DX4],[DX5],[DX6],[DX7],[DX8],[DX9],[DX10],[DX11],[DX12],[DX13],[DX14],[DX15],[DX16],[DX17],[DX18],[DX19],[DX20],[DX21],[DX22],[DX23],[DX24],[DX25],[DX26],[DX27],[DX28],[DX29],[DX30])) AS IP GROUP BY FollowUpComments,FollowUpDate,[numRow], [datComment],[timComment],[vcCommentBy],[vcComment],[vcAcctNo],[decVariance],[vcClient],[vcPatName],[vcPatSSN],[vcPatIns],[vcPatInsIdNo],[decTotalChgs],[decExpected],[vcUpCategory],[Dx1],[Dx2],[Dx3],[Dx4],[Dx5],[Dx6],[Dx7],[Dx8],[Dx9],[Dx10],[Dx11],[Dx12],[Dx13],[Dx14],[Dx15],[Dx16],[Dx17],[Dx18],[Dx19],[Dx20],[Dx21],[Dx22],[Dx23],[Dx24],[Dx25],[Dx26],[Dx27],[Dx28],[Dx29],[Dx30]";
 
             string sSQLTail = txtCustomSQL.Text;
 
@@ -481,8 +481,8 @@ namespace TestPOSTWebService
                     || txtDatFollowUp.Text.Equals(""))
                 {
                     String InsertQuery = string.Format(
-                       "Insert into FollowUp(numInitialRow,vcFuCommentBy,vcFuComment,vcContactName,vcContactPhone,vcContactEmail,vcCallRefNo,datFollowUp) values ("
-                           + "{0},{1},{2},{3},{4},{5},{6},{7})",
+                       "Insert into FollowUp(numInitialRow,vcFuCommentBy,vcFuComment,vcContactName,vcContactPhone,vcContactEmail,vcCallRefNo,datFollowUp,vcAcctNo,vcClient) values ("
+                           + "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9})",
                             txtNumInitialRow.Text.Equals("") ? "NULL" : txtNumInitialRow.Text,
                             txtVcFuCommentBy.Text.Equals("") ? "NULL" : "'" + txtVcFuCommentBy.Text + "'",
                             txtVcFuComment.Text.Equals("") ? "NULL" : "'" + txtVcFuComment.Text + "'",
@@ -490,8 +490,11 @@ namespace TestPOSTWebService
                             txtVcContactPhone.Text.Equals("") ? "NULL" : "'" + txtVcContactPhone.Text + "'",
                             txtVcContactEmail.Text.Equals("") ? "NULL" : "'" + txtVcContactEmail.Text + "'",
                             txtVcCallRefNo.Text.Equals("") ? "NULL" : "'" + txtVcCallRefNo.Text + "'",
-                            txtDatFollowUp.Text.Equals("") ? "NULL" : "'" + dateValue.ToString().Split()[0] + "'"
+                            txtDatFollowUp.Text.Equals("") ? "NULL" : "'" + dateValue.ToString().Split()[0] + "'",
+                            txtHiddenVcAcctNo.Text.Equals("") ? "NULL" : "'" + txtHiddenVcAcctNo.Text + "'",
+                            txtHiddenVcClient.Text.Equals("") ? "NULL" : "'" + txtHiddenVcClient.Text + "'"
                             );
+
 
                     DataSet ds = GridDataTable(InsertQuery);
 
@@ -615,6 +618,8 @@ namespace TestPOSTWebService
                 DataList4.DataBind();
 
                 txtNumInitialRow.Text = ds.Tables[1].Rows[0]["numRow"].ToString();
+                txtHiddenVcAcctNo.Text = ds.Tables[1].Rows[0]["vcAcctNo"].ToString();
+                txtHiddenVcClient.Text = ds.Tables[1].Rows[0]["vcClient"].ToString();
             }
         }
 
