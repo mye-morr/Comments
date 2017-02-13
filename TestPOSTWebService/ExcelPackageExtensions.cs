@@ -77,13 +77,19 @@ namespace TestPOSTWebService
                             break;
                         }
 
-                        //added by rb
-                        //if (workSheet.Cells[1, j].Text.Contains("DX") && dictCols.Keys.ElementAt(i).Equals("vcRevCD"))
-                        //{
-                        //    dx = dx + workSheet.Cells[rowNumber, j].Text + "|";
-                        //    newRow[i] = dx;
-                        //}
+                       // added by rb
+                        if (workSheet.Cells[1, j].Text.Contains("DX") && dictCols.Keys.ElementAt(i).Equals("vcDX"))
+                        {
+                            dx = dx + workSheet.Cells[rowNumber, j].Text + "|";
+                            newRow[i] = dx;
+                        }
 
+                        // added by rb
+                        if (workSheet.Cells[1, j].Text.Contains("PX") && dictCols.Keys.ElementAt(i).Equals("vcPX"))
+                        {
+                            px = px + workSheet.Cells[rowNumber, j].Text + "|";
+                            newRow[i] = px;
+                        }
 
                     }
                 }
